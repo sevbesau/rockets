@@ -31,8 +31,10 @@ function newConnection(socket) {
   socket.on('input', handleInput);
   socket.on('disconnect', disconnected);
 
+  game.on('ammo', (data) => {socket.emit('ammo', data)});
+
   function handleInput(input) {
-    game.playerInput(socket.id, input);
+    game.handleInput(socket.id, input);
   }
 
   function disconnected() {

@@ -3,7 +3,7 @@ let WIDTH, HEIGHT;
 let socket;
 let inputs;
 let rokcets;
-let bullets;
+let ammo;
 let id;
 
 let rocketImg;
@@ -19,6 +19,8 @@ function preload() {
   // handle messages from the socket
   socket.on('connected', onConnection);
   socket.on('view', updateView);
+  socket.on('ammo', updateAmmo);
+
 }
 
 function onConnection(data) {
@@ -27,15 +29,19 @@ function onConnection(data) {
   createCanvas(data.window.width, data.window.height).parent('canvasContainer');
 }
 
-
 function updateView(data) {
   rockets = data.rockets;
   bullets = data.bullets;
 }
 
+function updateAmmo(data) {
+  ammo = data.ammo;
+}
+
 function setup() {
   rockets = [];
   bullets = [];
+  ammo = 5;
 
   inputs = {
     LEFT_ARROW: false,
@@ -50,6 +56,8 @@ function draw() {
   // repeats every frame
   background(50);
   
+  drawAmmo();
+
   for (let rocket of rockets) {
     drawRocket(rocket);
   }
@@ -80,18 +88,26 @@ function drawRocket(rocket) {
 
 function drawBullet(bullet) {
   ellipseMode(CENTER);
-  stroke(255);
+  fill("red")
+  noStroke()
   push();
   translate(bullet.coords.x, bullet.coords.y);
   ellipse(0, 0, 5);
   pop();
 }
 
-function keyPressed() {
-  if (key === " ") {
-    
+function drawAmmo() {
+  ellipseMode(CENTER);
+  fill("red")
+  noStroke()
+  coords = {x: 10, y: 10};
+  for (let i = 0; i < ammo; i++) {
+    ellipse(coords.x, coords.y, 8);
+    coords.x += 13;
   }
+}
 
+function keyPressed() {
   let newInput = false;
   switch (keyCode) {
     case UP_ARROW:
@@ -117,6 +133,7 @@ function keyPressed() {
   if (newInput) socket.emit('input', inputs); // only send input if there is new input
   return false; // prevent any default behavior
 }
+
 function keyReleased() {
   let newInput = false;
   switch (keyCode) {

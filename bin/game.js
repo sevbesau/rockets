@@ -1,15 +1,13 @@
+const EventEmitter = require('events');
+
 const Rocket = require('./rocket');
 const Bullet = require('./bullet');
 const config = require('./config')
 
-class Game {
-
-  // TODO
-  // rocket has limited shots
-  // ammo pickups
-  // powerups ?
+class Game extends EventEmitter {
 
   constructor() {
+    super();
     this.ids = []
     this.players = {};
     this.bullets = [];
@@ -51,12 +49,15 @@ class Game {
     }
   }
 
-  playerInput(playerId, input) {
+  handleInput(playerId, input) {
+
     // handle shooting
-    if (input.SPACE && this.players[playerId].hasAmmo()) {
-      // only shoot if the player has ammo
-      this.players[playerId].shoot();
-      this.addBullet(playerId);
+    if (input.SPACE) {
+      if (this.players[playerId].hasAmmo()) { // only shoot if the player has ammo
+        this.players[playerId].shoot();
+        this.addBullet(playerId);
+        this.emit('ammo', {ammo: this.players[playerId].ammo});
+      }
       return // do nothing else but shoot
     }
 
@@ -115,6 +116,7 @@ class Game {
         coords: this.players[id].coords, 
         angle: this.players[id].angle, 
         thrusting: this.players[id].thrusting,
+        ammo: this.players[id].ammo,
         id: id
       })
     }
