@@ -3,7 +3,7 @@
 ## TODO:
 
   ### game mechanics:
-  - limited bullets
+  [ ] limited bullets
   - ammo pickups
   - powerups?
   - asteroids?
