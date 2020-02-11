@@ -16,8 +16,8 @@ module.exports.start = function start(server) {
   io.sockets.on('connection', newConnection);
 
   // start the game loops
-  sendView();
-  updateGame();
+  setInterval(sendView, config.UPDATE_VIEW_INTERVAL);
+  setInterval(updateGame, config.UPDATE_GAME_INTERVAL);
 }
 
 function newConnection(socket) {
@@ -48,11 +48,9 @@ function sendView() {
     rockets: game.getRockets(), 
     bullets: game.getBullets()
   })
-  setTimeout(sendView, config.UPDATE_VIEW_INTERVAL);
 }
 
 // physics loop
 function updateGame() {
   game.update();
-  setTimeout(updateGame, config.UPDATE_GAME_INTERVAL);
 }
