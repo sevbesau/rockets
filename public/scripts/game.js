@@ -23,7 +23,8 @@ function preload() {
 
 function onConnection(data) {
   id = data.id;
-  createCanvas(data.window.width, data.window.height);
+  // create a canvas and put it in the div #canvasContainer
+  createCanvas(data.window.width, data.window.height).parent('canvasContainer');
 }
 
 

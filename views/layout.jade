@@ -2,7 +2,7 @@ doctype html
 
 html 
   head
-  
+    link(rel='stylesheet', href='/stylesheets/layout.css')
     link(rel='stylesheet', href='/stylesheets/header.css')
     block styles
 
@@ -12,8 +12,14 @@ html
 
   body
     .header
-      h1 Header title
-      p Home | About | Game
+      h1 SpaceWars
+      ul.nav
+        li 
+          a(href="/login") Login
+        li 
+          a(href="/register") Register
+        li 
+          a(href="/leaderboard") LeaderBoard
 
     block content
 

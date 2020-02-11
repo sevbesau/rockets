@@ -1,0 +1,26 @@
+.header {
+  background-color: black;
+  color: white;
+  line-height: 60px;
+}
+
+.header h1 {
+  display: inline;
+  margin: 0.5em;
+}
+
+.nav {
+  display: inline;
+  list-style: none;
+}
+
+.nav li {
+  float: right;
+  margin: 0 1em;
+  padding-top: 0.1em;
+}
+
+.nav li a {
+  color: white;
+  text-decoration: none;
+}
