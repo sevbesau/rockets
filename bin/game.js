@@ -1,14 +1,15 @@
 const EventEmitter = require('events');
 
+const collisions = require('./collision');
 const Rocket = require('./rocket');
 const Bullet = require('./bullet');
-const config = require('./config')
+const config = require('./config');
 
 class Game extends EventEmitter {
 
   constructor() {
     super();
-    this.ids = []
+    this.ids = [];
     this.players = {};
     this.bullets = [];
   }
@@ -33,7 +34,7 @@ class Game extends EventEmitter {
   }
 
   removeBullet(bullet) {
-    this.bullets = this.bullets.filter((item) => item !== bullet)
+    this.bullets = this.bullets.filter((item) => item !== bullet);
   }
 
   removeObjects() {
@@ -99,7 +100,7 @@ class Game extends EventEmitter {
       for (let bullet of this.bullets) {
         if (
           playerId !== bullet.ownerId &&
-          this.players[playerId].collidesWithBullet(bullet.getCoords())
+          collisions.playerBullet(this.players[playerId].coords, bullet.coords)
         ) {
           this.players[playerId].toDelete = true;
           bullet.toDelete = true;

@@ -46,10 +46,6 @@ class Rocket {
     }
   }
 
-  collidesWithBullet(coords) {
-    return dist(this.coords.x, this.coords.y, coords.x, coords.y) < 20;
-  }
-
   turn(dir) {
     this.aVel = dir * config.TURN_RATE;
   }
@@ -82,10 +78,6 @@ class Rocket {
     return this.ammo > 0;
   }
   
-}
-
-function dist(x1, y1, x2, y2) {
-  return Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
 }
 
 module.exports = Rocket;
