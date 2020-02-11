@@ -38,6 +38,19 @@ class Game {
     this.bullets = this.bullets.filter((item) => item !== bullet)
   }
 
+  removeObjects() {
+    for (let playerId of this.ids) {
+      if (this.players[playerId].toDelete) {
+        this.removePlayer(playerId);
+      }
+    }
+    for (let bullet of this.bullets) {
+      if (bullet.toDelete) {
+        this.removeBullet(bullet);
+      }
+    }
+  }
+
   playerInput(playerId, input) {
     // handle shooting
     if (input.SPACE) {
@@ -47,41 +60,20 @@ class Game {
 
     // handle turning
     if (input.LEFT_ARROW || input.RIGHT_ARROW) {
-      this.players[playerId].dir = (input.LEFT_ARROW ? -1 : 1) * config.TURN_RATE;
+      this.players[playerId].dir = input.LEFT_ARROW ? -1 : 1;
     } else {
       this.players[playerId].dir = 0;
     }
 
     // handle accelerating
-    if (input.UP_ARROW || input.DOWN_ARROW) {
-      this.players[playerId].accelerate((input.DOWN_ARROW ? -1 : 1) * config.ACC_RATE);
-      this.players[playerId].setState("accelerating");
-    } else {
-      this.players[playerId].accelerate(0);
-      this.players[playerId].setState("neutral");
-    }
+    this.players[playerId].thrust(input.UP_ARROW);
+    
   }
 
   update() {
     this.updatePlayers();
     this.updateBullets();
     this.checkCollisions();
-  }
-
-  checkCollisions() {
-    // TODO
-    // dont delete when iterating!!
-    for (let playerId of this.ids) {
-      for (let bullet of this.bullets) {
-        if (
-          playerId !== bullet.ownerId &&
-          this.players[playerId].collidesWithBullet(bullet.getCoords())
-        ) {
-          this.removePlayer(playerId);
-          this.removeBullet(bullet);
-        }
-      }
-    }
   }
 
   updatePlayers() {
@@ -98,13 +90,30 @@ class Game {
     }
   }
 
+  checkCollisions() {
+    // TODO
+    // dont delete when iterating!!
+    for (let playerId of this.ids) {
+      for (let bullet of this.bullets) {
+        if (
+          playerId !== bullet.ownerId &&
+          this.players[playerId].collidesWithBullet(bullet.getCoords())
+        ) {
+          this.players[playerId].toDelete = true;
+          bullet.toDelete = true;
+        }
+      }
+    }
+    this.removeObjects();
+  }
+
   getRockets() {
     let rockets = [];
     for (let id of this.ids) {
       rockets.push({
         coords: this.players[id].coords, 
         angle: this.players[id].angle, 
-        state: this.players[id].state,
+        thrusting: this.players[id].thrusting,
         id: id
       })
     }

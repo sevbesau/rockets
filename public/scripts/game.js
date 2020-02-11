@@ -69,7 +69,7 @@ function drawRocket(rocket) {
   translate(rocket.coords.x, rocket.coords.y);
   rotate(rocket.angle+(Math.PI/2));
   scale(0.3);
-  if (rocket.state === "accelerating") {
+  if (rocket.thrusting) {
     image(rocketAccelerateImg, 0, 0);
   } else {
     image(rocketImg, 0, 0);
