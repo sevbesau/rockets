@@ -24,3 +24,7 @@
   color: white;
   text-decoration: none;
 }
+
+nav li p {
+  display: inline;
+}

@@ -14,10 +14,13 @@ html
     .header
       h1 SpaceWars
       ul.nav
-        li 
-          a(href="/login") Login
-        li 
-          a(href="/register") Register
+        if !loggedIn
+          li 
+            a(href="/login") Login
+          li 
+            a(href="/register") Register
+        else
+          li= username
         li 
           a(href="/leaderboard") LeaderBoard
 

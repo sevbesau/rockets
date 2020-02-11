@@ -3,6 +3,7 @@
 ## TODO:
 
   ### game mechanics:
+  - twinkle twinkle litle star
   - limited bullets
   - ammo pickups
   - powerups?
