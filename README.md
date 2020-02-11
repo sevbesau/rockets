@@ -1,14 +1,22 @@
 # SpaceWars
 
-### pages:
-- login
-- register
-- lobby
-- game
-- leaderboard
+## TODO:
 
-### page layout:
-- nav header
-- content
-- footer
+  ### game mechanics:
+  - limited bullets
+  - ammo pickups
+  - powerups?
+  - asteroids?
+
+  ### pages:
+  - login
+  - register
+  - lobby
+  - game
+  - leaderboard
+
+  ### page layout:
+  - nav header
+  - content
+  - footer
 
