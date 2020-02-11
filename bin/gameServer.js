@@ -36,9 +36,8 @@ function newConnection(socket) {
   }
 
   function disconnected() {
+    game.removePlayer(socket.id);
     console.log("lost connection to: "+socket.id)
-    game.removePlayer(socket.id)
-    // TODO
   }
 }
 

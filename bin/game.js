@@ -53,9 +53,11 @@ class Game {
 
   playerInput(playerId, input) {
     // handle shooting
-    if (input.SPACE) {
+    if (input.SPACE && this.players[playerId].hasAmmo()) {
+      // only shoot if the player has ammo
+      this.players[playerId].shoot();
       this.addBullet(playerId);
-      return 
+      return // do nothing else but shoot
     }
 
     // handle turning
@@ -67,7 +69,6 @@ class Game {
 
     // handle accelerating
     this.players[playerId].thrust(input.UP_ARROW);
-    
   }
 
   update() {

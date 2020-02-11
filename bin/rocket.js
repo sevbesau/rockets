@@ -3,6 +3,7 @@ const config = require("./config")
 class Rocket {
 
   constructor(x, y) {
+    this.ammo = 5;
     this.coords = {x: x, y: y};
     this.vel = {x: 0, y: 0};
     this.angle = 0;
@@ -69,8 +70,16 @@ class Rocket {
     return this.angle;
   }
 
-  getState() {
-    return this.state;
+  /* handle shooting and ammo */ 
+  shoot() {
+    this.ammo -= 1;
+  }
+  reload(amt) {
+    this.ammo += amt;
+    this.ammo = this.ammo <= config.MAX_AMMO ? this.ammo : config.MAX_AMMO;
+  }
+  hasAmmo() {
+    return this.ammo > 0;
   }
   
 }
