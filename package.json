@@ -1,0 +1,21 @@
+{
+  "name": "spacewars",
+  "version": "1.0.0",
+  "description": "SpaceWars is a simple multiplayer game built with socket.io, express and node",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sepseel/SpaceWars.git"
+  },
+  "author": "Seppe Van Besauw",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jade": "^1.11.0",
+    "socket.io": "^2.3.0"
+  }
+}
