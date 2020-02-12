@@ -88,7 +88,7 @@ class Game {
   updateBullets() {
     for (let bullet of this.bullets) {
       bullet.update();
-      if (bullet.collidesWithEdges()) this.removeBullet(bullet)
+      if (collisions.bulletEdges(bullet)) this.removeBullet(bullet);
     }
   }
   // TODO move more collision code to seperate file

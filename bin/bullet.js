@@ -18,17 +18,6 @@ class Bullet {
     this.coords.x += config.BULLET_VEL*Math.cos(this.heading);
     this.coords.y += config.BULLET_VEL*Math.sin(this.heading);
   }
-
-  // TODO move to collisions
-  // checks if the rocket collides with the edges
-  collidesWithEdges() {
-    return (
-      this.coords.x < 0 || 
-      this.coords.x > config.WIDTH ||
-      this.coords.y < 0 || 
-      this.coords.y > config.HEIGHT
-    )
-  }
 }
 
 module.exports = Bullet;

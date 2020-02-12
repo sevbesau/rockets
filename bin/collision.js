@@ -1,3 +1,5 @@
+const config = require("./config");
+
 function dist(x1, y1, x2, y2) {
   return Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
 }
@@ -10,4 +12,13 @@ module.exports.playerPowerUp = function playerPowerUp(playerCoords, powerUpCoord
   return dist(playerCoords.x, playerCoords.y, powerUpCoords.x, powerUpCoords.y) < 20;
 }
 
-// TODO comments
+module.exports.bulletEdges = function bulletEdges(bullet) {
+    return (
+      bullet.coords.x < 0 || 
+      bullet.coords.x > config.WIDTH ||
+      bullet.coords.y < 0 || 
+      bullet.coords.y > config.HEIGHT
+    )
+}
+
+// TODO add comments
