@@ -6,6 +6,7 @@
   - twinkle twinkle litle star
   - powerups destroyed by bullet
   - asteroids?
+  - score system
 
     #### powerups:
     -speedboost

@@ -11,6 +11,7 @@ class Game {
     this.players = {};
     this.bullets = [];
     this.powerups = [];
+    this.d = new Date();
   }
 
   /**
@@ -34,7 +35,7 @@ class Game {
 
   removePlayer(playerId) {
     this.ids = this.ids.filter(item => item !== playerId);
-    this.players[playerId] = undefined;
+    delete this.players[playerId];
   }
   removeBullet(bullet) {
     this.bullets = this.bullets.filter((item) => item !== bullet);
@@ -73,7 +74,8 @@ class Game {
     this.updatePlayers();
     this.updateBullets();
     this.checkCollisions();
-    if (Math.floor(Math.random()*100) > 99) {
+    // TODO better system for powerup spawnrates
+    if (Math.floor(Math.random()*100) > 98) {
       this.addPowerup("speedboost");
     }
   }
@@ -91,36 +93,10 @@ class Game {
       if (collisions.bulletEdges(bullet)) this.removeBullet(bullet);
     }
   }
-  // TODO move more collision code to seperate file
+  
   checkCollisions() {
-    let player;
-    for (let playerId of this.ids) {
-      player = this.players[playerId];
-      this.checkBulletCollisions(player);
-      this.checkPowerupCollisions(player);
-    }
+    collisions.checkCollisions(this.players, this.bullets, this.powerups);
     this.removeObjects();
-  }
-  checkPowerupCollisions(player) {
-    for (let powerup of this.powerups) {
-      if (collisions.playerPowerUp(player.coords, powerup.coords)) {
-        powerup.handle(player);
-        powerup.toDelete = true;
-        if (powerup.type === "ammo") {
-        }
-      }
-    }
-  }
-  checkBulletCollisions(player) {
-    for (let bullet of this.bullets) {
-      if (
-        player.id !== bullet.ownerId &&
-        collisions.playerBullet(player.coords, bullet.coords)
-      ) {
-        player.toDelete = true;
-        bullet.toDelete = true;
-      }
-    }
   }
 
   /**
