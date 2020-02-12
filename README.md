@@ -4,10 +4,13 @@
 
   ### game mechanics:
   - twinkle twinkle litle star
-  - ammo pickups
-  - powerups?
   - powerups destroyed by bullet
   - asteroids?
+
+    #### powerups:
+    -speedboost
+    -rapidFire
+
 
   ### pages:
   - login
