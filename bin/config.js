@@ -20,5 +20,6 @@ module.exports = {
   BULLET_VEL: 10,
 
   // powerups
-  MIN_LIFESPAN: 5
+  MIN_LIFESPAN: 5,
+  MIN_BOOST_DURATION: 3
 }

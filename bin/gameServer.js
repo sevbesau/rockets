@@ -20,32 +20,40 @@ module.exports.start = function start(server) {
   setInterval(updateGame, config.UPDATE_GAME_INTERVAL);
 }
 
+/**
+ * gets excecuted when a client connects to a socket,
+ * handles sending data between the game engine and the client
+ * @param {socket} socket the socket the client connected to
+ */
 function newConnection(socket) {
   console.log("new connection from: "+socket.id);
+
+  // add a player to the game, and let the client know he's connected
   game.addPlayer(socket.id);
   socket.emit('connected', {
     id: socket.id,
     window: {width: config.WIDTH, height: config.HEIGHT}
   }); 
 
-  game.addPowerup("ammo");
-
+  // callbacks to handle messages from the client
   socket.on('input', handleInput);
   socket.on('disconnect', disconnected);
 
-  game.on('ammo', (data) => {socket.emit('ammo', data)});
-
+  // sends the input from the client to the gameEngine
   function handleInput(input) {
     game.handleInput(socket.id, input);
   }
 
+  // removes a client from the game if he disconnects
   function disconnected() {
     game.removePlayer(socket.id);
     console.log("lost connection to: "+socket.id)
   }
 }
 
-// "render" loop
+/**
+ * sends all the objects in the game to the client
+ */
 function sendView() {
   io.emit('view', {
     rockets: game.getRockets(), 
@@ -54,7 +62,9 @@ function sendView() {
   })
 }
 
-// physics loop
+/**
+ * updates all the objects in the game
+ */
 function updateGame() {
   game.update();
 }

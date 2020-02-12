@@ -1,32 +1,26 @@
-const EventEmitter = require('events');
-
 const collisions = require('./collision');
 const Rocket = require('./rocket');
 const Bullet = require('./bullet');
 const powerups = require('./powerUp');
-const config = require('./config');
 
-class Game extends EventEmitter {
+class Game {
 
   constructor() {
-    super();
+    // arrays and dicts to keep track of all the objects in the game
     this.ids = [];
     this.players = {};
     this.bullets = [];
     this.powerups = [];
   }
 
+  /**
+   * Adding and removing objects to the game 
+   */
+
   addPlayer(playerId) {
     this.ids.push(playerId);
-    this.players[playerId] = new Rocket(200, 150);
-    this.players[playerId].dir = 0;
+    this.players[playerId] = new Rocket(200, 150, playerId);
   }
-
-  removePlayer(playerId) {
-    this.ids = this.ids.filter(item => item !== playerId);
-    this.players[playerId] = undefined;
-  }
-
   addBullet(playerId) {
     this.bullets.push(new Bullet(
       this.players[playerId].getCoords(),
@@ -34,26 +28,24 @@ class Game extends EventEmitter {
       playerId
     ));
   }
+  addPowerup(type) {
+    this.powerups.push(powerups.factory(type));
+  }
 
+  removePlayer(playerId) {
+    this.ids = this.ids.filter(item => item !== playerId);
+    this.players[playerId] = undefined;
+  }
   removeBullet(bullet) {
     this.bullets = this.bullets.filter((item) => item !== bullet);
   }
-
-  addPowerup(type) {
-    if (type === "ammo") {
-      this.powerups.push(new powerups.AmmoPickup(
-        Math.random(15, config.WIDTH-15),
-        Math.random(15, config.HEIGHT-15),
-        Math.random(0, 10)+config.MIN_LIFESPAN,
-        config.MAX_AMMO
-      ));
-    }
-  }
-
   removePowerup(powerup) {
     this.powerups = this.powerups.filter((item) => item !== powerup);
   }
 
+  /**
+   * Removes all objects in the game that have their toDelete flag set
+   */
   removeObjects() {
     for (let playerId of this.ids) {
       if (this.players[playerId].toDelete) {
@@ -67,43 +59,24 @@ class Game extends EventEmitter {
     }
     for (let powerup of this.powerups) {
       if (powerup.toDelete) {
-        this.removeBullet(powerup);
+        this.removePowerup(powerup);
       }
     }
   }
 
-  handleInput(playerId, input) {
 
-    // handle shooting
-    if (input.SPACE) {
-      if (this.players[playerId].hasAmmo()) { // only shoot if the player has ammo
-        this.players[playerId].shoot();
-        this.addBullet(playerId);
-        this.emit('ammo', {ammo: this.players[playerId].ammo});
-      }
-      return // do nothing else but shoot
-    }
-
-    // handle turning
-    if (input.LEFT_ARROW || input.RIGHT_ARROW) {
-      this.players[playerId].dir = input.LEFT_ARROW ? -1 : 1;
-    } else {
-      this.players[playerId].dir = 0;
-    }
-
-    // handle accelerating
-    this.players[playerId].thrust(input.UP_ARROW);
-  }
+  /**
+   * Updating all the objects in the game
+   */
 
   update() {
     this.updatePlayers();
     this.updateBullets();
     this.checkCollisions();
-    // if (Math.random(1000) > 999) {
-    //   this.addPowerup("ammo");
-    // }
+    if (Math.floor(Math.random()*100) > 99) {
+      this.addPowerup("speedboost");
+    }
   }
-
   updatePlayers() {
     for (let playerId of this.ids) {
       if (this.players[playerId]) { // only update a player if it still exists
@@ -112,28 +85,75 @@ class Game extends EventEmitter {
       }
     }
   }
-
   updateBullets() {
     for (let bullet of this.bullets) {
       bullet.update();
       if (bullet.collidesWithEdges()) this.removeBullet(bullet)
     }
   }
-
+  // TODO move more collision code to seperate file
   checkCollisions() {
+    let player;
     for (let playerId of this.ids) {
-      for (let bullet of this.bullets) {
-        if (
-          playerId !== bullet.ownerId &&
-          collisions.playerBullet(this.players[playerId].coords, bullet.coords)
-        ) {
-          this.players[playerId].toDelete = true;
-          bullet.toDelete = true;
-        }
-      }
+      player = this.players[playerId];
+      this.checkBulletCollisions(player);
+      this.checkPowerupCollisions(player);
     }
     this.removeObjects();
   }
+  checkPowerupCollisions(player) {
+    for (let powerup of this.powerups) {
+      if (collisions.playerPowerUp(player.coords, powerup.coords)) {
+        powerup.handle(player);
+        powerup.toDelete = true;
+        if (powerup.type === "ammo") {
+        }
+      }
+    }
+  }
+  checkBulletCollisions(player) {
+    for (let bullet of this.bullets) {
+      if (
+        player.id !== bullet.ownerId &&
+        collisions.playerBullet(player.coords, bullet.coords)
+      ) {
+        player.toDelete = true;
+        bullet.toDelete = true;
+      }
+    }
+  }
+
+  /**
+   * Handles the input from a player 
+   * @param {*} playerId id of the player sending input
+   * @param {*} input object containing the inputs 
+   */
+  handleInput(playerId, input) {
+    let player = this.players[playerId];
+
+    // handle shooting
+    if (input.SPACE) {
+      if (player.hasAmmo()) { // only shoot if the player has ammo
+        player.shoot();
+        this.addBullet(playerId);
+      }
+      return // do nothing else but shoot
+    }
+
+    // handle turning
+    if (input.LEFT_ARROW || input.RIGHT_ARROW) {
+      player.dir = input.LEFT_ARROW ? -1 : 1;
+    } else {
+      player.dir = 0;
+    }
+
+    // handle accelerating
+    player.thrust(input.UP_ARROW);
+  }
+  
+  /**
+   * getters for the server to send the objects to the client
+   */
 
   getRockets() {
     let rockets = [];
@@ -148,11 +168,9 @@ class Game extends EventEmitter {
     }
     return rockets;
   }
-
   getBullets() {
     return this.bullets;
   }
-
   getPowerups() {
     return this.powerups;
   }

@@ -34,10 +34,14 @@ function updateView(data) {
   rockets = data.rockets;
   bullets = data.bullets;
   powerups = data.powerups;
+  // find our rocket
+  for (let rocket of rockets) {
+    ammo = rocket.id == id ? rocket.ammo : ammo;
+  }
 }
 
 function updateAmmo(data) {
-  ammo = data.ammo;
+  //ammo = data.ammo;
 }
 
 function setup() {
@@ -60,6 +64,7 @@ function draw() {
   background(50);
   
   drawAmmo();
+
   for (let powerup of powerups) {
     drawPowerUp(powerup);
   }
