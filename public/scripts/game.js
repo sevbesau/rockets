@@ -178,3 +178,6 @@ function keyReleased() {
   if (newInput) socket.emit('input', inputs); // only send input if there is new input
   return false; // prevent any default behavior
 }
+
+
+// TODO comments

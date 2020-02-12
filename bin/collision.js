@@ -9,3 +9,5 @@ module.exports.playerBullet = function playerBullet(playerCoords, bulletCoords) 
 module.exports.playerPowerUp = function playerPowerUp(playerCoords, powerUpCoords) {
   return dist(playerCoords.x, playerCoords.y, powerUpCoords.x, powerUpCoords.y) < 20;
 }
+
+// TODO comments
