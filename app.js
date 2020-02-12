@@ -10,7 +10,6 @@ let app = express();
 let server = app.listen(8080);
 gameServer.start(server);
 
-
 // set up template engine
 app.set('views', './views');
 app.set('view engine', 'jade');

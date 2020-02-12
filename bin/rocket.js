@@ -11,6 +11,7 @@ class Rocket {
     this.aVel = 0;              // the speed the rocket is turning at 
     this.thrusting = false;     // if the rocket is applying thrust
     this.speedBoost = 0;        // the boost in velocity given by a powerup
+    this.dir = 0;
   }
   
   update(width, height) {
