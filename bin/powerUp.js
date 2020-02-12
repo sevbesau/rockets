@@ -1,4 +1,5 @@
 const config = require("./config");
+const util = require("./util");
 
 /**
  * Basic powerup sctructure
@@ -51,15 +52,6 @@ class SpeedBoost extends PowerUp {
   }
 }
 
-// TODO move to utils package?
-/**
- * helper funtion that generates a random integer between 0 and the given maximum 
- * @param {int} max the maximum value for the generated int
- */
-function randomInt(max) {
-  return Math.floor(Math.random()*max);
-}
-
 /**
  * builds a powerup of a given type and returns it 
  * @param {string} type determines the type of powerup that will be built
@@ -70,18 +62,18 @@ function powerupFactory(type) {
   switch (type) {
     case "ammo":
       powerup = new AmmoPickup(
-        randomInt(config.WIDTH-30)+15,
-        randomInt(config.HEIGHT-30)+15,
-        randomInt(10)+config.MIN_LIFESPAN,
+        util.randomInt(config.WIDTH-30)+15,
+        util.randomInt(config.HEIGHT-30)+15,
+        util.randomInt(10)+config.MIN_LIFESPAN,
         config.MAX_AMMO
       );
       break;
     case "speedboost":
       powerup = new SpeedBoost(
-        randomInt(config.WIDTH-30)+15,
-        randomInt(config.HEIGHT-30)+15,
-        randomInt(10)+config.MIN_LIFESPAN,
-        randomInt(5)+config.MIN_BOOST_DURATION
+        util.randomInt(config.WIDTH-30)+15,
+        util.randomInt(config.HEIGHT-30)+15,
+        util.randomInt(10)+config.MIN_LIFESPAN,
+        util.randomInt(5)+config.MIN_BOOST_DURATION
       );
       break;
     }
