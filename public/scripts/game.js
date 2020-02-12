@@ -11,6 +11,7 @@ let rocketImg;
 let rocketAccelerateImg;
 
 function preload() {
+  // we load all our images first
   rocketImg = loadImage('/img/rocket.png');
   rocketAccelerateImg = loadImage('/img/rocketAccelerate.png');
 
@@ -30,6 +31,10 @@ function onConnection(data) {
   createCanvas(data.window.width, data.window.height).parent('canvasContainer');
 }
 
+/**
+ * handles data from the server about the objects in the game 
+ * @param {*} data the objects in the game
+ */
 function updateView(data) {
   rockets = data.rockets;
   bullets = data.bullets;
@@ -38,10 +43,6 @@ function updateView(data) {
   for (let rocket of rockets) {
     ammo = rocket.id == id ? rocket.ammo : ammo;
   }
-}
-
-function updateAmmo(data) {
-  //ammo = data.ammo;
 }
 
 function setup() {
@@ -76,6 +77,8 @@ function draw() {
     drawBullet(bullet)
   }
 }
+
+// TODO move drawing functions to own file
 
 function drawRocket(rocket) {
   rectMode(CENTER);
@@ -180,4 +183,4 @@ function keyReleased() {
 }
 
 
-// TODO comments
+// TODO add comments
