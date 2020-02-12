@@ -96,6 +96,13 @@ class Rocket {
   boost(boosting) {
     this.speedBoost = boosting ? config.SPEEDBOOST : 0;
   }
+
+  getCoords() {
+    return {x: this.coords.x, y: this.coords.y};
+  }
+  getHeading() {
+    return this.angle;
+  }
 }
 
 module.exports = Rocket;
