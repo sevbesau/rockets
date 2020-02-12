@@ -2,7 +2,8 @@ let WIDTH, HEIGHT;
 
 let socket;
 let inputs;
-let rokcets;
+let rockets;
+let powerups;
 let ammo;
 let id;
 
@@ -32,6 +33,7 @@ function onConnection(data) {
 function updateView(data) {
   rockets = data.rockets;
   bullets = data.bullets;
+  powerups = data.powerups;
 }
 
 function updateAmmo(data) {
@@ -41,6 +43,7 @@ function updateAmmo(data) {
 function setup() {
   rockets = [];
   bullets = [];
+  powerups = [];
   ammo = 5;
 
   inputs = {
@@ -57,6 +60,9 @@ function draw() {
   background(50);
   
   drawAmmo();
+  for (let powerup of powerups) {
+    drawPowerUp(powerup);
+  }
 
   for (let rocket of rockets) {
     drawRocket(rocket);
@@ -93,6 +99,16 @@ function drawBullet(bullet) {
   push();
   translate(bullet.coords.x, bullet.coords.y);
   ellipse(0, 0, 5);
+  pop();
+}
+
+function drawPowerUp(powerup) {
+  ellipseMode(CENTER);
+  fill("green")
+  noStroke()
+  push();
+  translate(powerup.coords.x, powerup.coords.y);
+  ellipse(0, 0, 15);
   pop();
 }
 

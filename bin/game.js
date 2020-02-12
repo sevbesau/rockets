@@ -3,6 +3,7 @@ const EventEmitter = require('events');
 const collisions = require('./collision');
 const Rocket = require('./rocket');
 const Bullet = require('./bullet');
+const powerups = require('./powerUp');
 const config = require('./config');
 
 class Game extends EventEmitter {
@@ -12,6 +13,7 @@ class Game extends EventEmitter {
     this.ids = [];
     this.players = {};
     this.bullets = [];
+    this.powerups = [];
   }
 
   addPlayer(playerId) {
@@ -37,6 +39,21 @@ class Game extends EventEmitter {
     this.bullets = this.bullets.filter((item) => item !== bullet);
   }
 
+  addPowerup(type) {
+    if (type === "ammo") {
+      this.powerups.push(new powerups.AmmoPickup(
+        Math.random(15, config.WIDTH-15),
+        Math.random(15, config.HEIGHT-15),
+        Math.random(0, 10)+config.MIN_LIFESPAN,
+        config.MAX_AMMO
+      ));
+    }
+  }
+
+  removePowerup(powerup) {
+    this.powerups = this.powerups.filter((item) => item !== powerup);
+  }
+
   removeObjects() {
     for (let playerId of this.ids) {
       if (this.players[playerId].toDelete) {
@@ -46,6 +63,11 @@ class Game extends EventEmitter {
     for (let bullet of this.bullets) {
       if (bullet.toDelete) {
         this.removeBullet(bullet);
+      }
+    }
+    for (let powerup of this.powerups) {
+      if (powerup.toDelete) {
+        this.removeBullet(powerup);
       }
     }
   }
@@ -77,12 +99,17 @@ class Game extends EventEmitter {
     this.updatePlayers();
     this.updateBullets();
     this.checkCollisions();
+    // if (Math.random(1000) > 999) {
+    //   this.addPowerup("ammo");
+    // }
   }
 
   updatePlayers() {
     for (let playerId of this.ids) {
-      this.players[playerId].update();
-      this.players[playerId].turn(this.players[playerId].dir);
+      if (this.players[playerId]) { // only update a player if it still exists
+        this.players[playerId].update();
+        this.players[playerId].turn(this.players[playerId].dir);
+      }
     }
   }
 
@@ -94,8 +121,6 @@ class Game extends EventEmitter {
   }
 
   checkCollisions() {
-    // TODO
-    // dont delete when iterating!!
     for (let playerId of this.ids) {
       for (let bullet of this.bullets) {
         if (
@@ -126,6 +151,10 @@ class Game extends EventEmitter {
 
   getBullets() {
     return this.bullets;
+  }
+
+  getPowerups() {
+    return this.powerups;
   }
 }
 

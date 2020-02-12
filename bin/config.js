@@ -14,7 +14,11 @@ module.exports = {
   TURN_RATE: 0.15, 
   FRICTION: 0.05,
   MAX_AMMO: 5,
+  SPEEDBOOST: 2,
 
   // bullet
-  BULLET_VEL: 10
+  BULLET_VEL: 10,
+
+  // powerups
+  MIN_LIFESPAN: 5
 }

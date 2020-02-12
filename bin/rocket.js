@@ -10,17 +10,16 @@ class Rocket {
     this.turnDir = 0;
     this.aVel = 0;
     this.thrusting = false;
+    this.boost = 0;
   }
   
   update(width, height) {
     if (this.thrusting) {
       // apply thrust
-      this.vel.x += config.ACC_RATE*Math.cos(this.angle);
-      this.vel.y += config.ACC_RATE*Math.sin(this.angle);
-    } else {
-      // apply friction
-      
-    }
+      this.vel.x += (config.ACC_RATE+this.boost)*Math.cos(this.angle);
+      this.vel.y += (config.ACC_RATE+this.boost)*Math.sin(this.angle);
+    } 
+    
     this.vel.x -= config.FRICTION * this.vel.x;
     this.vel.y -= config.FRICTION * this.vel.y;
 
@@ -78,6 +77,10 @@ class Rocket {
     return this.ammo > 0;
   }
   
+  /* handle the powerups */
+  boost(boosting) {
+    boost = boosting ? config.SPEEDBOOST : 0;
+  }
 }
 
 module.exports = Rocket;

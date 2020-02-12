@@ -4,9 +4,9 @@
 
   ### game mechanics:
   - twinkle twinkle litle star
-  - limited bullets
   - ammo pickups
   - powerups?
+  - powerups destroyed by bullet
   - asteroids?
 
   ### pages:

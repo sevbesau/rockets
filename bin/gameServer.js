@@ -28,6 +28,8 @@ function newConnection(socket) {
     window: {width: config.WIDTH, height: config.HEIGHT}
   }); 
 
+  game.addPowerup("ammo");
+
   socket.on('input', handleInput);
   socket.on('disconnect', disconnected);
 
@@ -47,7 +49,8 @@ function newConnection(socket) {
 function sendView() {
   io.emit('view', {
     rockets: game.getRockets(), 
-    bullets: game.getBullets()
+    bullets: game.getBullets(),
+    powerups: game.getPowerups()
   })
 }
 
