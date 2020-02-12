@@ -1,6 +1,6 @@
 const socket = require('socket.io');
 
-const Game = require('./game');
+const Game = require('./gameEngine');
 const config = require('./config');
 
 let game, io;
