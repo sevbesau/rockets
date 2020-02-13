@@ -1,9 +1,18 @@
 let rocketImg;
 let rocketAccelerateImg;
+let images;
 
 function loadImages() {
-  rocketImg = loadImage('/img/rocket.png');
-  rocketAccelerateImg = loadImage('/img/rocketAccelerate.png');
+  images = {
+    rocket: {
+      neutral: loadImage('/img/rocket.png'),
+      thrusting: loadImage('/img/rocketAccelerate.png')
+    },
+    powerup: {
+      ammo: loadImage('/img/ammo.png'),
+      boost: loadImage('/img/boost.png')
+    }
+  }
 }
 
 function drawRocket(rocket) {
@@ -19,9 +28,9 @@ function drawRocket(rocket) {
   rotate(rocket.angle+(Math.PI/2));
   scale(0.3);
   if (rocket.thrusting) {
-    image(rocketAccelerateImg, 0, 0);
+    image(images.rocket.thrusting, 0, 0);
   } else {
-    image(rocketImg, 0, 0);
+    image(images.rocket.neutral, 0, 0);
   }
   pop();
 }
@@ -43,6 +52,7 @@ function drawPowerUp(powerup) {
   push();
   translate(powerup.coords.x, powerup.coords.y);
   ellipse(0, 0, 15);
+  image(images.powerup[powerup.type], 0, 0, 12, 12)
   pop();
 }
 

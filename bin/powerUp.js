@@ -40,7 +40,7 @@ class SpeedBoost extends PowerUp {
   constructor(x, y, lifeSpan, duration) {
     super(x, y, lifeSpan);
     this.duration = duration;
-    this.type = "speedboost";
+    this.type = "boost";
   }
 
   handle(rocket) {
@@ -68,7 +68,7 @@ function powerupFactory(type) {
         config.MAX_AMMO
       );
       break;
-    case "speedboost":
+    case "boost":
       powerup = new SpeedBoost(
         util.randomInt(config.WIDTH-30)+15,
         util.randomInt(config.HEIGHT-30)+15,

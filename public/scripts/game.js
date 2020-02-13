@@ -17,7 +17,6 @@ function preload() {
   // handle messages from the socket
   socket.on('connected', onConnection);
   socket.on('view', updateView);
-  socket.on('ammo', updateAmmo);
 
 }
 
