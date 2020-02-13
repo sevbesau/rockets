@@ -58,7 +58,6 @@ class SpeedBoost extends PowerUp {
  */
 function powerupFactory(type) {
   let powerup;
-  console.log("powerup")
   switch (type) {
     case "ammo":
       powerup = new AmmoPickup(
