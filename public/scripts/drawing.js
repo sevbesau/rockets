@@ -19,9 +19,9 @@ function drawRocket(rocket) {
   rectMode(CENTER);
   imageMode(CENTER);
   if (rocket.id === id) {
-    stroke(0, 255, 0);
+    // TODO diffrent image for our own rocket
   } else {
-    stroke(255);
+    
   }
   push();
   translate(rocket.coords.x, rocket.coords.y);
@@ -54,15 +54,4 @@ function drawPowerUp(powerup) {
   ellipse(0, 0, 15);
   image(images.powerup[powerup.type], 0, 0, 12, 12)
   pop();
-}
-
-function drawAmmo() {
-  ellipseMode(CENTER);
-  fill("red")
-  noStroke()
-  coords = {x: 10, y: 10};
-  for (let i = 0; i < ammo; i++) {
-    ellipse(coords.x, coords.y, 8);
-    coords.x += 13;
-  }
 }
