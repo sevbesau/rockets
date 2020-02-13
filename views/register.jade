@@ -1,0 +1,18 @@
+extends layout
+
+block title
+  title Register
+
+block content
+  h1 Register
+  form(action="/register", method="POST")
+    div
+      label(for="name") Username
+      input(type="text", name="name", required)#name
+      div
+      label(for="email") Email
+      input(type="email", name="email", required)#email
+    div
+      label(for="password") Password
+      input(type="password", name="password", required)#password
+    button(type="submit") Register 

@@ -1,0 +1,17 @@
+extends layout
+
+block title
+  title Login
+
+block content
+  h1 Login
+  if messages.error
+    p= messages.error
+  form(action="/login", method="POST")
+    div
+      label(for="email") Email
+      input(type="email", name="email", required)#email
+    div
+      label(for="password") Password
+      input(type="password", name="password", required)#password
+    button(type="submit") Login
