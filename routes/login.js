@@ -4,6 +4,7 @@ const passport = require('passport');
 
 const router = express.Router();
 
+// DATABASE !!!!!!!!!!
 
 let users = []; // TODO move into database!!
 // TODO sanitize form inputs!

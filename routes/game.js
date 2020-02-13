@@ -20,12 +20,12 @@ function checkAuthenticated(req, res, next) {
  * contains all the routes for the game related pages
  */
 
-router.get('/spacewars', checkAuthenticated, (req, res) => {
-  res.render('gameView', {loggedIn: true, username: req.user.name});
+router.get('/', checkAuthenticated, (req, res) => {
+  res.render('game', {loggedIn: true, username: req.user.name});
 });
 
 router.get('/lobby', checkAuthenticated, (req, res) => {
-  res.render('lobbyView', {loggedIn: true, username: req.user.name});
+  res.render('lobby', {loggedIn: true, username: req.user.name});
 })
 
 router.get('/leaderboard', checkAuthenticated, (req, res) => {
