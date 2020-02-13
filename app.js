@@ -8,15 +8,20 @@ const session = require('express-session');
 const passport = require('passport');
 
 const routes = require('./routes/game');
-const login = require('./routes/login');
+const login = require('./routes/users');
 const gameServer = require('./bin/gameServer');
 
 // start an express app
 let app = express();
 
+// get the right port
+const PORT = process.env.PORT || 8080;
+
 // start the servers
-let server = app.listen(8080);
+let server = app.listen(PORT);
 gameServer.start(server);
+
+console.log(`Server running and listening on ${PORT}...`);
 
 // set up template engine
 app.set('views', './views');
@@ -26,7 +31,7 @@ app.set('view engine', 'jade');
 // this way we can acces is through the req object
 app.use(express.urlencoded({ extended: false }))
 
-// TODO whats flash?
+// flash handles form error messages 
 app.use(flash());
 
 // user stays logged in accross pages
@@ -47,8 +52,7 @@ app.use(express.static('public'));
 
 // define the routes for / and /game
 app.use('/', login);
-app.use('/game', routes);
+app.use('/users', routes);
 
 
 
-console.log("Server running...");
