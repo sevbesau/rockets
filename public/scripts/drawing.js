@@ -1,3 +1,11 @@
+let rocketImg;
+let rocketAccelerateImg;
+
+function loadImages() {
+  rocketImg = loadImage('/img/rocket.png');
+  rocketAccelerateImg = loadImage('/img/rocketAccelerate.png');
+}
+
 function drawRocket(rocket) {
   rectMode(CENTER);
   imageMode(CENTER);

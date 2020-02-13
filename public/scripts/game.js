@@ -7,13 +7,9 @@ let powerups;
 let ammo;
 let id;
 
-let rocketImg;
-let rocketAccelerateImg;
-
 function preload() {
   // we load all our images first
-  rocketImg = loadImage('/img/rocket.png');
-  rocketAccelerateImg = loadImage('/img/rocketAccelerate.png');
+  loadImages();
 
   // open a socket connection
   socket = io.connect('http://localhost:8080');
@@ -78,10 +74,6 @@ function draw() {
   }
 }
 
-// TODO move drawing functions to own file
-
-
-
 function keyPressed() {
   let newInput = false;
   switch (keyCode) {
@@ -108,7 +100,6 @@ function keyPressed() {
   if (newInput) socket.emit('input', inputs); // only send input if there is new input
   return false; // prevent any default behavior
 }
-
 function keyReleased() {
   let newInput = false;
   switch (keyCode) {
