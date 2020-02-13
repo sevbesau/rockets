@@ -13,7 +13,7 @@ function checkAuthenticated(req, res, next) {
     return next();
   }
 
-  res.redirect('/login');
+  res.redirect('/users/login');
 }
 
 /**
