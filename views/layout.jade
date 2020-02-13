@@ -2,29 +2,42 @@ doctype html
 
 html 
   head
+    link(rel="stylesheet", href="/stylesheets/fontawesome.all.css")
+    link(rel="stylesheet", href="/stylesheets/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/layout.css')
     link(rel='stylesheet', href='/stylesheets/header.css')
     block styles
 
     block title
       title Default title
-      
+    
+
+    script(src="/libraries/jquery.slim.min.js")
+    script(src="/libraries/popper.min.js")
+    script(src="/libraries/bootstrap.min.js")
     block imports 
 
   body
-    .header
+    
+    // TODO move header to own file and use bootstrap
+    .header 
       h1 SpaceWars
       ul.nav
         if !loggedIn
           li 
-            a(href="/login") Login
+            a(href="/users/login") Login
           li 
-            a(href="/register") Register
+            a(href="/users/register") Register
         else
           li= username
         li 
           a(href="/leaderboard") LeaderBoard
 
-    block content
+    .container
+      block content
 
+    // TODO make footer with bootstrap and move to own file
     .footer
+    
+
+

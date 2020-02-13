@@ -4,15 +4,24 @@ block title
   title Register
 
 block content
-  h1 Register
-  form(action="/register", method="POST")
-    div
-      label(for="name") Username
-      input(type="text", name="name", required)#name
-      div
-      label(for="email") Email
-      input(type="email", name="email", required)#email
-    div
-      label(for="password") Password
-      input(type="password", name="password", required)#password
-    button(type="submit") Register 
+  .row.mt-5
+    .col-md-6.m-auto
+      .card.card-body 
+        .text-center.mb-3
+          // TODO fix font awesome font!!! i.fas.fa-user-plus 
+          h1 Register
+        include ./includes/messages
+        form(action="/users/register", method="POST")
+          .form-group
+            label(for="name") Username
+            input(type="text", name="name", required).form-control#name
+          .form-group
+            label(for="email") Email
+            input(type="email", name="email", required).form-control#email
+          .form-group
+            label(for="password") Password
+            input(type="password", name="password", required).form-control#password
+          .form-group
+            label(for="password") Repeat password
+            input(type="password", name="password2", required).form-control#password2
+          button(type="submit").btn.btn-primary.btn-block Register 
