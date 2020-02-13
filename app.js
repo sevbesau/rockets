@@ -7,7 +7,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const passport = require('passport');
 
-const routes = require('./routes/index');
+const routes = require('./routes/game');
 const login = require('./routes/login');
 const gameServer = require('./bin/gameServer');
 
