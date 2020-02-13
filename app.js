@@ -8,7 +8,8 @@ const session = require('express-session');
 const passport = require('passport');
 
 const routes = require('./routes/index');
-const gameServer = require('./bin/gameServer')
+const login = require('./routes/login');
+const gameServer = require('./bin/gameServer');
 
 // start an express app
 let app = express();
@@ -44,8 +45,10 @@ app.use(passport.session());
 // host the files in the 'public' folder
 app.use(express.static('public'));
 
-// define the routes for /
-app.use('/', routes);
+// define the routes for / and /game
+app.use('/', login);
+app.use('/game', routes);
+
 
 
 console.log("Server running...");
