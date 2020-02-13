@@ -1,11 +1,6 @@
-body {
-  margin: 0;
-} 
-
 #canvasContainer {
   text-align: center;
 }
 canvas {
-  margin-top: 50px;
   display: inline;
 }
