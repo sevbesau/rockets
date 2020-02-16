@@ -1,38 +1,24 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
-}
+} 
 
 const express = require('express');
 const flash = require('express-flash');
 const session = require('express-session');
 const passport = require('passport');
 
-const routes = require('./routes/game');
-const login = require('./routes/users');
 const gameServer = require('./bin/gameServer');
 
 // start an express app
 let app = express();
-
-// get the right port
-const PORT = process.env.PORT || 8080;
-
-// start the servers
-let server = app.listen(PORT);
-gameServer.start(server);
-
-console.log(`Server running and listening on ${PORT}...`);
 
 // set up template engine
 app.set('views', './views');
 app.set('view engine', 'jade');
 
 // pass through all information,
-// this way we can acces is through the req object
+// this way we can acces it through the req object
 app.use(express.urlencoded({ extended: false }))
-
-// flash handles form error messages 
-app.use(flash());
 
 // user stays logged in accross pages
 app.use(session({
@@ -40,6 +26,16 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
+// flash handles messages between page renders
+app.use(flash());
+
+// global vars for sending messages between pages
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
 
 // TODO what is passport?
 app.use(passport.initialize());
@@ -50,9 +46,18 @@ app.use(passport.session());
 // host the files in the 'public' folder
 app.use(express.static('public'));
 
+
 // define the routes for / and /game
-app.use('/', login);
-app.use('/users', routes);
+app.use('/', require('./routes/index'));
+app.use('/games', require('./routes/games'));
+app.use('/leaderboards', require('./routes/leaderboards'));
+app.use('/users', require('./routes/users'));
 
+// get the right port
+const PORT = process.env.PORT || 8080;
 
+// start the servers
+let server = app.listen(PORT);
+gameServer.start(server);
 
+console.log(`Server running and listening on ${PORT}...`);
