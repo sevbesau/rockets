@@ -2,16 +2,15 @@ doctype html
 
 html 
   head
-    link(rel="stylesheet", href="/stylesheets/fontawesome.all.css")
     link(rel="stylesheet", href="/stylesheets/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/layout.css')
-    link(rel='stylesheet', href='/stylesheets/header.css')
+    //link(rel='stylesheet', href='/stylesheets/header.css')
     block styles
 
     block title
       title Default title
     
-
+    script(src="https://kit.fontawesome.com/bf7b8edb6e.js", crossorigin="anonymous")
     script(src="/libraries/jquery.slim.min.js")
     script(src="/libraries/popper.min.js")
     script(src="/libraries/bootstrap.min.js")
@@ -19,19 +18,7 @@ html
 
   body
     
-    // TODO move header to own file and use bootstrap
-    .header 
-      h1 SpaceWars
-      ul.nav
-        if !loggedIn
-          li 
-            a(href="/users/login") Login
-          li 
-            a(href="/users/register") Register
-        else
-          li= username
-        li 
-          a(href="/leaderboard") LeaderBoard
+    include ./includes/header
 
     .container
       block content

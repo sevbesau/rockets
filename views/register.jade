@@ -7,21 +7,23 @@ block content
   .row.mt-5
     .col-md-6.m-auto
       .card.card-body 
-        .text-center.mb-3
-          // TODO fix font awesome font!!! i.fas.fa-user-plus 
-          h1 Register
+        h1.text-center.mb-3
+          i.fas.fa-user-plus
+          |  Register 
         include ./includes/messages
         form(action="/users/register", method="POST")
           .form-group
             label(for="name") Username
-            input(type="text", name="name", required).form-control#name
+            input(type="text", name="name", value=name).form-control#name
           .form-group
             label(for="email") Email
-            input(type="email", name="email", required).form-control#email
+            input(type="email", name="email", value=email).form-control#email
           .form-group
             label(for="password") Password
-            input(type="password", name="password", required).form-control#password
+            input(type="password", name="password", value=password).form-control#password
           .form-group
             label(for="password") Repeat password
-            input(type="password", name="password2", required).form-control#password2
+            input(type="password", name="password2", value=password2).form-control#password2
           button(type="submit").btn.btn-primary.btn-block Register 
+        p.lead.mt-4 Have an account? 
+          a(href="/users/login") Login

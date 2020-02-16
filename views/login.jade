@@ -4,14 +4,21 @@ block title
   title Login
 
 block content
-  h1 Login
-  if messages.error
-    p= messages.error
-  form(action="/login", method="POST")
-    div
-      label(for="email") Email
-      input(type="email", name="email", required)#email
-    div
-      label(for="password") Password
-      input(type="password", name="password", required)#password
-    button(type="submit") Login
+  .row.mt-5
+    .col-md-6.m-auto
+      .card.card-body 
+        h1.text-center.mb-3
+          i.fas.fa-sign-in-alt  
+          |  Login
+        include ./includes/messages
+        form(action="/users/login", method="POST")
+          .form-group
+            label(for="email") Email
+            input(type="email", name="email").form-control#email
+          .form-group
+            label(for="password") Password
+            input(type="password", name="password").form-control#password
+          button(type="submit").btn.btn-primary.btn-block Login
+        p.lead.mt-4 Need an account? 
+          a(href="/users/register") Register
+        

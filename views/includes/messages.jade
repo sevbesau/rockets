@@ -1,0 +1,18 @@
+if errors
+  each err in errors 
+    div(role='alert').alert.alert-warning.aler-dismissible.fade.show
+      = err.msg
+      button(type='button', data-dismiss='alert', aria-label='close').close
+        span(aria-hidden='true') &times;
+
+unless success_msg == ''
+  div(role='alert').alert.alert-success.aler-dismissible.fade.show
+      = success_msg
+      button(type='button', data-dismiss='alert', aria-label='close').close
+        span(aria-hidden='true') &times;
+
+unless error_msg == ''
+  div(role='alert').alert.alert-warning.aler-dismissible.fade.show
+      = error_msg
+      button(type='button', data-dismiss='alert', aria-label='close').close
+        span(aria-hidden='true') &times;
