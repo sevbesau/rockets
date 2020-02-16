@@ -6,9 +6,20 @@ module.exports.randomInt = function(max) {
   return Math.floor(Math.random()*max);
 }
 
+/**
+ * builds an object containing information about the user to pass to a page
+ */
 module.exports.getUserData = function(req) {
   return {
     loggedIn: req.isAuthenticated(), 
     username: req.isAuthenticated() ? req.user.name : undefined
   }
+}
+
+/**
+ * Sanitizes the string so our database is protected
+ */
+module.exports.sanitize = function(str) {
+  // TODO implement sanitizing;
+  return str;
 }
