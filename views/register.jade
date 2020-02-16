@@ -13,8 +13,8 @@ block content
         include ./includes/messages
         form(action="/users/register", method="POST")
           .form-group
-            label(for="name") Username
-            input(type="text", name="name", value=name).form-control#name
+            label(for="username") Username
+            input(type="text", name="username", value=username).form-control#username
           .form-group
             label(for="email") Email
             input(type="email", name="email", value=email).form-control#email
@@ -25,5 +25,5 @@ block content
             label(for="password") Repeat password
             input(type="password", name="password2", value=password2).form-control#password2
           button(type="submit").btn.btn-primary.btn-block Register 
-        p.lead.mt-4 Have an account? 
+        p.lead.mt-4 Have an account?
           a(href="/users/login") Login
