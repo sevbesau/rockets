@@ -37,7 +37,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// TODO what is passport?
+// use passport to save a logged in user's information
 app.use(passport.initialize());
 
 // works with session to keep user logged in during one session

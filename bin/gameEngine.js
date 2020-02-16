@@ -74,7 +74,7 @@ class Game {
     this.updatePlayers();
     this.updateBullets();
     this.checkCollisions();
-    // TODO better system for powerup spawnrates
+    // TODO even better system for powerup spawnrates
     if (Math.random() > 0.99) {
       if (Math.random() > 0.66) {
         this.addPowerup("boost");
