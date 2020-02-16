@@ -7,7 +7,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const passport = require('passport');
 const database = require('./bin/database');
-const gameServer = require('./bin/gameServer');
+const gameServer = require('./bin/spacewars/gameServer');
 
 // start an express app
 let app = express();
