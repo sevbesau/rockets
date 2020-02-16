@@ -1,28 +1,30 @@
 nav.navbar.navbar-dark.bg-dark
-  a(href="/").navbar-brand Brand
+  // games and leaderboards 
   ul.nav
+    li.nav-item
+      a(href="/").navbar-brand Brand 
     // games
     li.nav-item.dropdown
       a(href="#", data-toggle="dropdown", role="button", aria-hashpopup="true", aria-expanded="false").nav-link.dropdown-toggle
         | Games
       .dropdown-menu
-          a(href="/games/spacewars").dropdown-item SpaceWars
+        a(href="/games/spacewars").dropdown-item SpaceWars
+        a(href="/games/snake").dropdown-item Snake
     // leaderboards
     li.nav-item.dropdown
       a(href="#", data-toggle="dropdown", role="button", aria-hashpopup="true", aria-expanded="false").nav-link.dropdown-toggle
         | Leaderboards
       .dropdown-menu
-          a(href="/leaderboards/spacewars").dropdown-item SpaceWars
-    // user section 
+        a(href="/scores/leaderboards/spacewars").dropdown-item SpaceWars
+        a(href="/scores/leaderboards/snake").dropdown-item Snake
+  // user section 
   ul.nav.justify-content-end
     if !loggedIn
       // show links to login/register
       li.nav-item
-        a(href="/users/login").nav-link.active
-        | Login
+        a(href="/users/login").nav-link.active Login
       li.nav-item
-        a(href="/users/register").nav-link.active
-        | Register
+        a(href="/users/register").nav-link.active Register
     else
       // show dropdown to manage account
       li.nav-item.dropdown
