@@ -5,16 +5,18 @@ const mysql = require('mysql');
  */
 function connect() {
   // mysql connection object
-  const mysqlDB = mysql.createConnection({
+  module.mysqlDB = mysql.createConnection({
     host: 'localhost',
     user: 'node',
     password: '456189',
     database: 'games'
   })
   // make an actual connection using out connection object
-  mysqlDB.connect((err) => {
+  module.mysqlDB.connect((err) => {
     if (!err) {
       console.log('Database connection succes');
+      let z = getUsers();
+      console.log(z); 
     } else {
       console.log('Database connection failed: '+JSON.stringify(err, undefined, 2));
     }
@@ -25,8 +27,8 @@ function connect() {
  * Returns all the users in the user table
  */
 function getUsers() {
-  const query = `SELECT * FROM user`;
-  mysqlDB.query(query, (err, rows, fields) => {
+  const query = `SELECT * FROM user;`;
+  module.mysqlDB.query(query, (err, rows, fields) => {
     if (!err) {
       return rows;
     } else {
@@ -41,7 +43,7 @@ function getUsers() {
  */
 function getUserByEmail(email) {
   const query = `SELECT * FROM user WHERE email = ${email}`;
-  mysqlDB.query(query, (err, rows, fields) => {
+  module.mysqlDB.query(query, (err, rows, fields) => {
     if (!err) {
       // TODO only return user id?
       return rows;
@@ -51,6 +53,17 @@ function getUserByEmail(email) {
   });
 }
 
+function getUserById(id) {
+  const query = `SELECT * FROM user WHERE id = ${id}`;
+  module.mysqlDB.query(query, (err, rows, fields) => {
+    if (!err) {
+      return rows
+    } else {
+      console.log(err);
+    }
+  })
+}
+
 /**
  * Put a user in the database
  * @param {string} email 
@@ -58,9 +71,11 @@ function getUserByEmail(email) {
  * @param {string} password 
  */
 function putUser(email, username, password) {
-  // TODO build put query string
-  const query = `${email} ${username} ${password}`;
-  mysqlDB.query(query, (err, rows, fields) => {
+  const query = `
+    INSERT INTO user (email, username, password)
+    VALUES ('${email}', '${username}', '${password}');
+  `;
+  module.mysqlDB.query(query, (err, rows, fields) => {
     if (!err) {
       return rows;
     } else {
@@ -75,7 +90,7 @@ function putUser(email, username, password) {
  */
 function deleteUser(userid) {
   const query = `DELETE FROM user WHERE id = ${userid}`;
-  mysqlDB.query(query, (err, rows, fields) => {
+  module.mysqlDB.query(query, (err, rows, fields) => {
     if (!err) {
       console.log("Deleted user");
     } else {
@@ -88,6 +103,7 @@ module.exports = {
   connect, 
   putUser, 
   getUsers,
+  getUserById,
   getUserByEmail,
   deleteUser
 }
