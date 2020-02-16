@@ -11,7 +11,7 @@ let users = []; // TODO move into database!!
 
 const initializePassport = require('../bin/passport-config');
 
-// set up passport // TODO what does passport do?
+// set up passport 
 initializePassport(
   passport, 
   // TODO replace with database querrys
@@ -31,27 +31,14 @@ router.get('/register', (req, res) => {
 
 // route for the login form
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/game/lobby',
+  successRedirect: '/',
   failureRedirect: '/users/login',
   failureFlash: true
 }));
 
 // route for the register form
 router.post('/register', async (req, res) => {
-  // TODO validate inputs
   // VALIDATE does email exist in database?
-
-
-
-  // TODO remove debug account
-  let pw = await bcrypt.hash("admin", 10);
-  users.push({
-    id: Date.now().toString(),
-    name: "admin", 
-    email: "admin@admin.com",
-    password: pw
-  })
-
 
   const { name, email, password, password2 } = req.body;
   let errors = [];
