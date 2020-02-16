@@ -5,3 +5,10 @@
 module.exports.randomInt = function(max) {
   return Math.floor(Math.random()*max);
 }
+
+module.exports.getUserData = function(req) {
+  return {
+    loggedIn: req.isAuthenticated(), 
+    username: req.isAuthenticated() ? req.user.name : undefined
+  }
+}
