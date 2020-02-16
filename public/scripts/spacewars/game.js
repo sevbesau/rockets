@@ -50,7 +50,7 @@ function setup() {
     LEFT_ARROW: false,
     RIGHT_ARROW: false,
     UP_ARROW: false,
-    DOWN_ARROW: false, 
+    DOWN_ARROW: false,
     SPACE: false
   }
 }
@@ -59,7 +59,7 @@ function draw() {
   // repeats every frame
   background(50);
   
-  drawAmmo();
+  drawAmmo(); 
 
   for (let powerup of powerups) {
     drawPowerUp(powerup);
