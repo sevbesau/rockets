@@ -16,6 +16,7 @@ function loadImages() {
 }
 
 function drawRocket(rocket) {
+  // TODO extend flame when boosting
   rectMode(CENTER);
   imageMode(CENTER);
   if (rocket.id === id) {
@@ -47,7 +48,7 @@ function drawBullet(bullet) {
 
 function drawPowerUp(powerup) {
   ellipseMode(CENTER);
-  fill("green")
+  fill(powerup.type == "ammo" ? "green" : "yellow");
   noStroke()
   push();
   translate(powerup.coords.x, powerup.coords.y);
@@ -55,3 +56,13 @@ function drawPowerUp(powerup) {
   image(images.powerup[powerup.type], 0, 0, 12, 12)
   pop();
 }
+
+function drawAmmo() {
+  ellipseMode(CENTER);
+  fill("red")
+  noStroke()
+  for (let i = 0; i < ammo; i++) {
+    ellipse(10+10*i, 10, 8);
+  }
+}
+                                                                               
