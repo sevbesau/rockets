@@ -3,7 +3,8 @@ var score
 	
 function setup() {
   // runs once on startup
-  createCanvas(600, 400);
+  createCanvas(600, 400).parent('canvasContainer');
+
   s = new Snake(20);
   a = new Apple(70, 70);
   frameRate(10);
