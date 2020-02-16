@@ -6,11 +6,14 @@ const express = require('express');
 const flash = require('express-flash');
 const session = require('express-session');
 const passport = require('passport');
-
+const database = require('./bin/database');
 const gameServer = require('./bin/gameServer');
 
 // start an express app
 let app = express();
+
+// open a connection to our database
+database.connect();
 
 // set up template engine
 app.set('views', './views');
@@ -46,11 +49,10 @@ app.use(passport.session());
 // host the files in the 'public' folder
 app.use(express.static('public'));
 
-
 // define the routes for / and /game
 app.use('/', require('./routes/index'));
 app.use('/games', require('./routes/games'));
-app.use('/leaderboards', require('./routes/leaderboards'));
+app.use('/scores', require('./routes/scores'));
 app.use('/users', require('./routes/users'));
 
 // get the right port
