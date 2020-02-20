@@ -9,8 +9,11 @@
 - score system
 
 #### powerups:
--rapidFire
+- rapidFire
 
+### Login an Register form
+- validate
+- sanitize
 
 ### pages:
 - games -> styling
@@ -19,27 +22,30 @@
 ### page layout:
 - footer
 
+### bugs
+- header dropdown alligned left
+
 ## games DB
-### TABLE user
+### TABLE Users
 | name     | type             | null     | primary | extra          |
 | -------- | ---------------- | -------- |:-------:| -------------- |
 | id       | unsigned int(11) | not null | *       | auto_increment |
-| email    | varchar(25)      | not null | 
-| password | varchar(30)      | not null |
-| username | varchar(40)      | not null |
+| email    | varchar(255)      | not null | 
+| password | varchar(255)      | not null |
+| username | varchar(255)      | not null |
 
 Create table command: 
 
 ```
-create table user(
+create table Users(
   id int(11) unsigned auto_increment primary key not null, 
-  username varchar(25) not null, 
-  password varchar(30) not null, 
-  email varchar(40) not null
+  username varchar(255) not null, 
+  password varchar(255) not null, 
+  email varchar(255) not null
 );
 ``` 
 
-### TABLE score 
+### TABLE Scores
 | name     | type             | null     | primary | extra          |
 | -------- | ---------------- | -------- |:-------:| -------------- |
 | id       | unsigned int(11) | not null | *       | auto_increment |
@@ -50,7 +56,7 @@ create table user(
 Create table command: 
 
 ```
-create table score(
+create table Scores(
   id int(11) unsigned auto_increment not null primary key, 
   user_id int(11) unsigned not null, 
   game_id int(11) unsigned not null, 
@@ -58,7 +64,7 @@ create table score(
 );
 ```
 
-### TABLE game    
+### TABLE Games
 | name     | type             | null     | primary | extra          |
 | -------- | ---------------- | -------- |:-------:| -------------- |
 | id       | unsigned int(11) | not null | *       | auto_increment |
@@ -67,7 +73,7 @@ create table score(
 Create table command: 
 
 ```
-create table game(
+create table Games(
   id int(11) unsigned auto_increment not null primary key,
   title varchar(20) not null
 );
