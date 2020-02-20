@@ -12,7 +12,7 @@ module.exports.randomInt = function(max) {
 module.exports.getUserData = function(req) {
   return {
     loggedIn: req.isAuthenticated(), 
-    username: req.isAuthenticated() ? req.user.name : undefined
+    username: req.isAuthenticated() ? req.user.username : undefined
   }
 }
 
