@@ -6,14 +6,10 @@ const express = require('express');
 const flash = require('express-flash');
 const session = require('express-session');
 const passport = require('passport');
-const database = require('./bin/database');
 const gameServer = require('./bin/spacewars/gameServer');
 
 // start an express app
 let app = express();
-
-// open a connection to our database
-database.connect();
 
 // set up template engine
 app.set('views', './views');
@@ -59,7 +55,12 @@ app.use('/users', require('./routes/users'));
 const PORT = process.env.PORT || 8080;
 
 // start the servers
-let server = app.listen(PORT);
-gameServer.start(server);
+let server = app.listen(PORT, (err) => {
+  if (!err) {
+    console.log(`Server running and listening on ${PORT}...`);
+    gameServer.start(server); // start the server for rocketWars
+    require('./models/database'); // start the database
+  }
+  else console.log(err);
+});
 
-console.log(`Server running and listening on ${PORT}...`);
