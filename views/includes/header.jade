@@ -30,7 +30,7 @@ nav.navbar.navbar-dark.bg-dark
       li.nav-item.dropdown
         a(href="#", data-toggle="dropdown", role="button", aria-hashpopup="true", aria-expanded="false").nav-link.dropdown-toggle
           =username
-        .dropdown-menu 
-          a(href="/users/settings").dropdown-item Manage Account
-          a(href="/users/logout").dropdown-item Logout
+        ul.dropdown-menu
+          li:a(href="/users/settings").dropdown-item Manage Account
+          li:a(href="/users/logout").dropdown-item Logout
     
