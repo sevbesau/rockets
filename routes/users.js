@@ -1,7 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const database = require('../bin/database');
+const database = require('../models/database');
+const User = require('../models/user');
 const { sanitize } = require('../bin/util');
 
 const router = express.Router();
@@ -11,8 +12,14 @@ const initializePassport = require('../bin/passport-config');
 // set up passport 
 initializePassport(
   passport, 
-  email => database.getUserByEmail(email),
-  id => database.getUserById(id)
+  async email => {
+    const response = await User.findAll({where: {email: email}});
+    return response[0];
+  },
+  async id => {
+    const response = await User.findAll({where: {id: id}});
+    return response[0];
+  }
 );
 
 // route to get the login page
@@ -40,30 +47,31 @@ function validateRegisterForm(req) {
   // VALIDATE email
   // VALIDATE does email exist in database?
   let errors = [];
+  console.log(req.body)
+  const { username, email, password, password2 } = req.body;
 
   // are all the fields filled in?
-  if (!name || !email || !password || !password2) {
-    errors.push({ msg: 'Please fill out all fields.' });
-  }
-  // do any of the fields contain an ; ?
-  if (name.contains(";") && email.contains(";") || password.contains(";")) {
-    errors.push({msg: "Please dont use ';'"});
-  }
-  // is the password long enough?
-  if (password.length < 6) {
-    errors.push({ msg: 'Password must be at least 6 characters.' });
-  }
-  // do the passwords match?
-  if (password !== password2) {
-    errors.push({ msg: 'Passwords must match.'})
-  }
-  return errors;
+ // if (!username || !email || !password || !password2) {
+ //   errors.push({ msg: 'Please fill out all fields.' });
+ // }
+ // // do any of the fields contain an ; ?
+ // if (username.contains(";") && email.contains(";") || password.contains(";")) {
+ //   errors.push({msg: "Please dont use ';'"});
+ // }
+ // // is the password long enough?
+ // if (password.length < 6) {
+ //   errors.push({ msg: 'Password must be at least 6 characters.' });
+ // }
+ // // do the passwords match?
+ // if (password !== password2) {
+ //   errors.push({ msg: 'Passwords must match.'})
+ // }
+  return { errors, username, email, password };
 }
 
 // route for the register form
 router.post('/register', async (req, res) => {
-  const errors = validateRegisterForm(req);
-  const { name, email, password, password2 } = req.body;
+  const { errors, username, email, password, password2 } = validateRegisterForm(req);
   if (errors.length > 0) {
     // invalid form
     res.render('register', { errors, username, email, password, password2 })
@@ -71,7 +79,12 @@ router.post('/register', async (req, res) => {
     // valid form
     try {
       const hashedPassword = await bcrypt.hash(password, 10)
-      database.putUser(email, username, hashedPassword);
+      const user = await User.create({
+        email: email,
+        username: username,
+        password: hashedPassword
+      })
+      await user.save();
       req.flash('success_msg', 'You are now registered and can log in')
       res.redirect('/users/login');
     } catch {
