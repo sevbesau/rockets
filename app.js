@@ -12,7 +12,7 @@ const gameServer = require('./bin/spacewars/gameServer');
 let app = express();
 
 // set up template engine
-app.set('views', './views');
+app.set('views', './views/pages');
 app.set('view engine', 'jade');
 
 // pass through all information,
