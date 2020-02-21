@@ -1,4 +1,4 @@
-extends layout
+extends ../templates/layout
 
 block title
   title Register
@@ -10,7 +10,7 @@ block content
         h1.text-center.mb-3
           i.fas.fa-user-plus
           |  Register 
-        include ./includes/messages
+        include ../includes/messages
         form(action="/users/register", method="POST")
           .form-group
             label(for="username") Username
