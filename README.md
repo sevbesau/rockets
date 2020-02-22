@@ -58,8 +58,8 @@ Create table command:
 ```
 create table Scores(
   id int(11) unsigned auto_increment not null primary key, 
-  user_id int(11) unsigned not null, 
-  game_id int(11) unsigned not null, 
+  userId int(11) unsigned not null, 
+  gameId int(11) unsigned not null, 
   score int(11) unsigned not null 
 );
 ```
@@ -75,6 +75,6 @@ Create table command:
 ```
 create table Games(
   id int(11) unsigned auto_increment not null primary key,
-  title varchar(20) not null
+  title varchar(255) not null
 );
 ```
