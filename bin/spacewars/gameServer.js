@@ -1,16 +1,24 @@
 const socket = require('socket.io');
+const sharedSession = require('express-socket.io-session');
 
 const Game = require('./gameEngine');
 const config = require('./config');
+const { getUserById } = require('../../models/database');
 
 let game, io;
 
-module.exports.start = function start(server) {
+// TODO link up session and socketio connection
+
+module.exports.start = function start(server, session) {
   // create a game engine object
   game = new Game()
 
   // create a server socket
   io = socket(server);
+  io.use(sharedSession(session, {
+    autoSave: false
+  }));
+
 
   // bind a socket connection to a funciton
   io.sockets.on('connection', newConnection);
@@ -25,11 +33,22 @@ module.exports.start = function start(server) {
  * handles sending data between the game engine and the client
  * @param {socket} socket the socket the client connected to
  */
-function newConnection(socket) {
-  console.log("new connection from: "+socket.id);
+async function newConnection(socket) {
+  // TODO allow users only one connection
+  // get the username for the user connecting with this socket
+  let username = "guest"
+  try {
+    if (socket.handshake.session.passport) {
+      const user = await getUserById(socket.handshake.session.passport.user);
+      username = user.username
+    } 
+  } catch (err) {
+    console.log('[gameserver]', err);
+  }
+  console.log(`[gameServer] new connection from ${username}, socketid: ${socket.id}`);
 
   // add a player to the game, and let the client know he's connected
-  game.addPlayer(socket.id);
+  game.addPlayer(socket.id, username);
   socket.emit('connected', {
     id: socket.id,
     window: {width: config.WIDTH, height: config.HEIGHT}
@@ -47,7 +66,7 @@ function newConnection(socket) {
   // removes a client from the game if he disconnects
   function disconnected() {
     game.removePlayer(socket.id);
-    console.log("lost connection to: "+socket.id)
+    console.log("[gameserver] lost connection to: "+socket.id)
   }
 }
 
