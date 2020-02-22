@@ -18,9 +18,9 @@ class Game {
    * Adding and removing objects to the game 
    */
 
-  addPlayer(playerId) {
+  addPlayer(playerId, username) {
     this.ids.push(playerId);
-    this.players[playerId] = new Rocket(200, 150, playerId);
+    this.players[playerId] = new Rocket(200, 150, playerId, username);
   }
   addBullet(playerId) {
     this.bullets.push(new Bullet(
@@ -143,7 +143,8 @@ class Game {
         angle: this.players[id].angle, 
         thrusting: this.players[id].thrusting,
         ammo: this.players[id].ammo,
-        id: id
+        username: this.players[id].username,
+        id: id,
       })
     }
     return rockets;

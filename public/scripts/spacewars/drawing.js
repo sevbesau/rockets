@@ -26,6 +26,12 @@ function drawRocket(rocket) {
   }
   push();
   translate(rocket.coords.x, rocket.coords.y);
+  
+  fill(255);
+  textSize(10);
+  textAlign(CENTER);
+  text(rocket.username, 0, -20);
+
   rotate(rocket.angle+(Math.PI/2));
   scale(0.3);
   if (rocket.thrusting) {

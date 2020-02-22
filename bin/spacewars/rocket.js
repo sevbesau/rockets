@@ -2,7 +2,8 @@ const config = require("./config")
 
 class Rocket {
 
-  constructor(x, y, id) {
+  constructor(x, y, id, username) {
+    this.username = username;   // the username of the player controlling the rocket
     this.coords = {x: x, y: y}; // the coords of the player
     this.vel = {x: 0, y: 0};    // the velocity of the player
     this.id = id;               // the id of the client the rocket belongs to
