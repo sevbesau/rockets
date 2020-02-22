@@ -1,20 +1,22 @@
-const { Sequelize } = require('sequelize');
-//const User = require('./user');
-/**
- * Connect to the mySql database
- */
-const sequelize = new Sequelize('games', 'node', '456189', {
-  host: 'localhost',
-  dialect: 'mysql',
-  freezeTableName: true, // use same name as model to addres database
-  logging: msg => console.log(`[database] ${msg}`)
-});
+const bcrypt = require('bcrypt');
+const User = require("./user");
 
-try {
-  sequelize.authenticate();
-  console.log('[database] connection succes');
-} catch (error) {
-  console.log('[database] connection failed:', error);
+module.exports.createUser = async (email, username, password) => {
+  const hashedPassword = await bcrypt.hash(password, 10) // encypt the password
+  const user = await User.create({ // make a model of the user to store in the database
+    email: email,
+    username: username,
+    password: hashedPassword
+  })
+  await user.save(); // save the user to the database
 }
 
-module.exports = sequelize;
+module.exports.getUserById = async (id) => {
+  const response = await User.findAll({where: {id: id}});
+  return response[0];
+}
+
+module.exports.getUserByEmail = async (email) => {
+  const response = await User.findAll({where: {email: email}});
+  return response[0];
+}

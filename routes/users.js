@@ -1,26 +1,9 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 const passport = require('passport');
-const database = require('../models/database');
-const User = require('../models/user');
 const { sanitize } = require('../bin/util');
+const { createUser } = require('../models/database');
 
 const router = express.Router();
-
-const initializePassport = require('../bin/passport-config');
-
-// set up passport 
-initializePassport(
-  passport, 
-  async email => {
-    const response = await User.findAll({where: {email: email}});
-    return response[0];
-  },
-  async id => {
-    const response = await User.findAll({where: {id: id}});
-    return response[0];
-  }
-);
 
 // route to get the login page
 router.get('/login', (req, res) => {
@@ -78,13 +61,7 @@ router.post('/register', async (req, res) => {
   } else {
     // valid form
     try {
-      const hashedPassword = await bcrypt.hash(password, 10)
-      const user = await User.create({
-        email: email,
-        username: username,
-        password: hashedPassword
-      })
-      await user.save();
+      await createUser(email, username, password); // add the user to the database
       req.flash('success_msg', 'You are now registered and can log in')
       res.redirect('/users/login');
     } catch {

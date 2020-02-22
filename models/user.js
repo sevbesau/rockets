@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database');
+const dBconnection = require('./databaseConnection');
 
-module.exports = sequelize.define('User', {
+module.exports = dBconnection.define('User', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true
