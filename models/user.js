@@ -7,15 +7,15 @@ module.exports = dBconnection.define('User', {
     primaryKey: true
   },
   email: {
-    type: DataTypes.STRING(25),
+    type: DataTypes.STRING,
     allowNull: false
   },
   password: {
-    type: DataTypes.STRING(30),
+    type: DataTypes.STRING,
     allowNull: false
   },
   username: {
-    type: DataTypes.STRING(40),
+    type: DataTypes.STRING,
     allowNull: false
   }
 }, {
