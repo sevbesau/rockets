@@ -10,7 +10,7 @@ const { getUserData } = require('../bin/util');
  * @param {*} next 
  */
 function checkAuthenticated(req, res, next) {
-  if (true /* DEBUG */ || req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
     return next();
   }
 
@@ -22,12 +22,12 @@ function checkAuthenticated(req, res, next) {
  * contains all the routes for the game related pages
  */
 
-router.get('/spacewars', checkAuthenticated, (req, res) => {
+router.get('/spacewars', (req, res) => {
   res.render('spacewars', getUserData(req));
   //res.render('game', {loggedIn: true, username: req.user.name});
 });
 
-router.get('/snake', checkAuthenticated, (req, res) => {
+router.get('/snake', (req, res) => {
   res.render('snake', getUserData(req));
 })
 
