@@ -4,8 +4,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const flash = require('express-flash');
-const session = require('express-session');
+const Session = require('express-session');
 const passport = require('passport');
+
+const initializePassport = require('./bin/passport-config');
+const { getUserByEmail, getUserById } = require('./models/database');
 const gameServer = require('./bin/spacewars/gameServer');
 
 // start an express app
@@ -19,12 +22,13 @@ app.set('view engine', 'jade');
 // this way we can acces it through the req object
 app.use(express.urlencoded({ extended: false }))
 
-// user stays logged in accross pages
-app.use(session({
+const session = Session({
   secret: process.env.SESSION_SECRET, 
   resave: false,
   saveUninitialized: false
-}));
+});
+// user stays logged in accross pages
+app.use(session);
 
 // flash handles messages between page renders
 app.use(flash());
@@ -35,6 +39,10 @@ app.use((req, res, next) => {
   res.locals.error_msg = req.flash('error_msg');
   next();
 });
+
+
+// set up passport 
+initializePassport(passport, getUserByEmail, getUserById);
 
 // use passport to save a logged in user's information
 app.use(passport.initialize());
@@ -58,8 +66,8 @@ const PORT = process.env.PORT || 8080;
 let server = app.listen(PORT, (err) => {
   if (!err) {
     console.log(`Server running and listening on ${PORT}...`);
-    gameServer.start(server); // start the server for rocketWars
-    require('./models/database'); // start the database
+    gameServer.start(server, session); // start the server for rocketWars
+    require('./models/databaseConnection'); // start the database
   }
   else console.log(err);
 });
