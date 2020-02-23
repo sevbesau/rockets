@@ -70,9 +70,9 @@ let server = app.listen(PORT, (err) => {
     gameServer.start(server, session); // start the server for rocketWars
     database.initialize();
     require('./models/databaseConnection'); // start the database
-    database.createGame("Snake");
-    database.createScore(10, "Snake", 1);
-    database.getScoresByGameTitle("Snake");
+  //  database.createGame("Snake");
+  //  database.createScore(10, "Snake", 1);
+  //  database.getScoresByGameTitle("Snake");
   }
   else console.log(err);
 });
