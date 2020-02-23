@@ -6,9 +6,10 @@ const express = require('express');
 const flash = require('express-flash');
 const Session = require('express-session');
 const passport = require('passport');
+const cors = require('cors');
 
 const initializePassport = require('./bin/passport-config');
-const { getUserByEmail, getUserById } = require('./models/database');
+const database = require('./models/database');
 const gameServer = require('./bin/spacewars/gameServer');
 
 // start an express app
@@ -18,6 +19,7 @@ let app = express();
 app.set('views', './views/pages');
 app.set('view engine', 'jade');
 
+app.use(cors());
 // pass through all information,
 // this way we can acces it through the req object
 app.use(express.urlencoded({ extended: false }))
@@ -40,9 +42,8 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // set up passport 
-initializePassport(passport, getUserByEmail, getUserById);
+initializePassport(passport, database.getUserByEmail, database.getUserById);
 
 // use passport to save a logged in user's information
 app.use(passport.initialize());
@@ -67,7 +68,11 @@ let server = app.listen(PORT, (err) => {
   if (!err) {
     console.log(`Server running and listening on ${PORT}...`);
     gameServer.start(server, session); // start the server for rocketWars
+    database.initialize();
     require('./models/databaseConnection'); // start the database
+    database.createGame("Snake");
+    database.createScore(10, "Snake", 1);
+    database.getScoresByGameTitle("Snake");
   }
   else console.log(err);
 });
