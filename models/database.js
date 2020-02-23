@@ -1,24 +1,24 @@
 const bcrypt = require('bcrypt');
 const User = require("./user");
-const Score = require('./score');
-const Game = require('./game');
+//const Score = require('./score');
+//const Game = require('./game');
 
 /**
  * Associations
  */
 module.exports.initialize = async () => {
-  User.hasMany(Score, {allowNull: false});
-  Game.hasMany(Score, {allowNull: false});
-  Score.belongsTo(User, {allowNull: false});
-  Score.belongsTo(Game, {allowNull: false});
+ // User.hasMany(Score, {allowNull: false});
+ // Game.hasMany(Score, {allowNull: false});
+ // Score.belongsTo(User, {allowNull: false});
+ // Score.belongsTo(Game, {allowNull: false});
   
   /**
    * make the tables in the database match our models
    * force: drop the table and create a new one if exists
    */
-  await User.sync()
-  await Game.sync()
-  await Score.sync()
+  await User.sync({force: true })
+  //await Game.sync()
+  //await Score.sync()
 
 }
 
@@ -33,7 +33,6 @@ module.exports.createGame = async (title) => {
 
 module.exports.getGameByTitle = async (title) => {
   const response = await Game.findOne({ where: { title } });
-  console.log("found game: ",response[0])
   return response[0];
 }
 
@@ -63,6 +62,7 @@ module.exports.getScoresByGameTitle = async (gameTitle) => {
 module.exports.createUser = async (email, username, password) => {
   // TODO dont create duplicate users
   const hashedPassword = await bcrypt.hash(password, 10) // encypt the password
+  console.log(hashedPassword)
   const newUser = await User.create({ // make a model of the user to store in the database
     email: email,
     username: username,

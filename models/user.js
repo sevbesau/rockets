@@ -4,7 +4,9 @@ const dBconnection = require('./databaseConnection');
 module.exports = dBconnection.define('User', {
   id: {
     type: DataTypes.INTEGER,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false
   },
   email: {
     type: DataTypes.STRING,
