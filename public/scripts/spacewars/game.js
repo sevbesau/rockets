@@ -12,12 +12,13 @@ function preload() {
   loadImages();
 
   // open a socket connection
-  socket = io.connect('http://localhost:8080');
+  // TODO connect to server ip
+  socket = io.connect('http://http://sevbesau.duckdns.org/');
 
   // handle messages from the socket
   socket.on('connected', onConnection);
   socket.on('view', updateView);
-
+  
 }
 
 function onConnection(data) {
