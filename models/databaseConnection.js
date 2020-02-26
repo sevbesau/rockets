@@ -3,7 +3,7 @@ const { Sequelize } = require('sequelize');
 /**
  * Connect to the mySql database
  */
-const sequelize = new Sequelize('games', 'root', 'agdomnik', {
+const sequelize = new Sequelize('games', username, passwd) {
   host: 'localhost',
   dialect: 'mysql',
   freezeTableName: true, // use same name as model to addres database
