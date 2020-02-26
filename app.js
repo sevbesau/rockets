@@ -61,7 +61,7 @@ app.use('/scores', require('./routes/scores'));
 app.use('/users', require('./routes/users'));
 
 // get the right port
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 // start the servers
 let server = app.listen(PORT, (err) => {

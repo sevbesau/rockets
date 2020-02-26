@@ -16,7 +16,7 @@ module.exports.initialize = async () => {
    * make the tables in the database match our models
    * force: drop the table and create a new one if exists
    */
-  await User.sync({force: true })
+  //await User.sync({force: true })
   //await Game.sync()
   //await Score.sync()
 
