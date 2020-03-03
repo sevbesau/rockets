@@ -13,7 +13,7 @@ function preload() {
 
   // open a socket connection
   // TODO connect to server ip
-  socket = io.connect('http://sevbesau.duckdns.org/');
+  socket = io.connect('http://localhost:8080');
 
   // handle messages from the socket
   socket.on('connected', onConnection);
