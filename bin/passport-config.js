@@ -10,34 +10,33 @@ function initialize(passport, getUserByEmail, getUserById) {
     }
     try {
       if (await bcrypt.compare(password, user.dataValues.password)) {
-         return done(null, user);
-      } else {
-        return done(null, false, { message: 'Password incorrect' })
+        return done(null, user);
       }
+      return done(null, false, { message: 'Password incorrect' });
     } catch (e) {
-      return done(e)
+      return done(e);
     }
-  }
+  };
 
   // use a local login system, dont use fb, google, etc..
   passport.use(new LocalStrategy(
-    { 
+    {
       usernameField: 'email',
-      passwordField: 'password'
+      passwordField: 'password',
     },
-    authenticateUser
+    authenticateUser,
   ));
 
   passport.serializeUser((user, done) => {
     done(null, user.id);
-  })
+  });
   passport.deserializeUser((id, done) => {
     const getUser = async (id) => {
       const user = await getUserById(id);
       done(null, user);
-    }
+    };
     getUser(id);
-  })
+  });
 }
 
 module.exports = initialize;

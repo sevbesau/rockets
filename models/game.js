@@ -4,14 +4,13 @@ const dBconnection = require('./databaseConnection');
 module.exports = dBconnection.define('Game', {
   id: {
     type: DataTypes.INTEGER,
-    primaryKey: true
+    primaryKey: true,
   },
   title: {
     type: DataTypes.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
   },
 }, {
-  timestamps: false
-})
- 
+  timestamps: false,
+});

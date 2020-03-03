@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-//const User = require('./user');
+// const User = require('./user');
 /**
  * Connect to the mySql database
  */
@@ -7,7 +7,7 @@ const sequelize = new Sequelize('games', process.env.DB_LOGIN, process.env.DB_PA
   host: 'localhost',
   dialect: 'mysql',
   freezeTableName: true, // use same name as model to addres database
-  logging: msg => console.log(`[database] ${msg}`)
+  logging: (msg) => console.log(`[database] ${msg}`),
 });
 
 try {

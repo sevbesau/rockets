@@ -1,5 +1,5 @@
 module.exports = {
-  name: "SpaceWar",
+  name: 'SpaceWar',
 
   // game server
   UPDATE_VIEW_INTERVAL: 15,
@@ -10,8 +10,8 @@ module.exports = {
   HEIGHT: 300,
 
   // rocket
-  ACC_RATE: 0.5, 
-  TURN_RATE: 0.15, 
+  ACC_RATE: 0.5,
+  TURN_RATE: 0.15,
   FRICTION: 0.05,
   MAX_AMMO: 5,
   SPEEDBOOST: 0.2,
@@ -21,5 +21,5 @@ module.exports = {
 
   // powerups
   MIN_LIFESPAN: 5,
-  MIN_BOOST_DURATION: 3
-}
+  MIN_BOOST_DURATION: 3,
+};

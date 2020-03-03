@@ -1,5 +1,3 @@
-let WIDTH, HEIGHT;
-
 let socket;
 let inputs;
 let rockets;
@@ -18,7 +16,6 @@ function preload() {
   // handle messages from the socket
   socket.on('connected', onConnection);
   socket.on('view', updateView);
-  
 }
 
 function onConnection(data) {
@@ -28,7 +25,7 @@ function onConnection(data) {
 }
 
 /**
- * handles data from the server about the objects in the game 
+ * handles data from the server about the objects in the game
  * @param {*} data the objects in the game
  */
 function updateView(data) {
@@ -36,7 +33,7 @@ function updateView(data) {
   bullets = data.bullets;
   powerups = data.powerups;
   // find our rocket
-  for (let rocket of rockets) {
+  for (const rocket of rockets) {
     ammo = rocket.id == id ? rocket.ammo : ammo;
   }
 }
@@ -52,25 +49,25 @@ function setup() {
     RIGHT_ARROW: false,
     UP_ARROW: false,
     DOWN_ARROW: false,
-    SPACE: false
-  }
+    SPACE: false,
+  };
 }
 
 function draw() {
   // repeats every frame
   background(50);
-  
-  drawAmmo(); 
 
-  for (let powerup of powerups) {
+  drawAmmo();
+
+  for (const powerup of powerups) {
     drawPowerUp(powerup);
   }
 
-  for (let rocket of rockets) {
+  for (const rocket of rockets) {
     drawRocket(rocket);
   }
-  for (let bullet of bullets) {
-    drawBullet(bullet)
+  for (const bullet of bullets) {
+    drawBullet(bullet);
   }
 }
 
@@ -94,7 +91,7 @@ function keyPressed() {
       newInput = true;
       break;
     case 32: // SPACE
-      socket.emit('input', {SPACE: true})
+      socket.emit('input', { SPACE: true });
       break;
   }
   if (newInput) socket.emit('input', inputs); // only send input if there is new input

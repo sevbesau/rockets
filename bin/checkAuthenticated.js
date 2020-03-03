@@ -4,4 +4,4 @@ module.exports.checkAuthenticated = function checkAuthenticated(req, res, next) 
   }
 
   res.reqirect('/login');
-}
+};

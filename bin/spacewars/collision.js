@@ -1,28 +1,28 @@
-const config = require("./config");
+const config = require('./config');
 
 // TODO take out the root https://www.youtube.com/watch?v=Cl_Gjj80gPE 22min
 /**
- * Calculates the euclidean distance between two points 
+ * Calculates the euclidean distance between two points
  * @param {*} x1 x coord of point1
  * @param {*} y1 y coord of point1
- * @param {*} x2 x coord of point2 
+ * @param {*} x2 x coord of point2
  * @param {*} y2 y coord of point2
  */
 function dist(x1, y1, x2, y2) {
-  return Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
+  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
 
 /**
- * Returns true if the given bullet collides with the edges of the canvas 
- * @param {*} bullet the bullet to check for 
+ * Returns true if the given bullet collides with the edges of the canvas
+ * @param {*} bullet the bullet to check for
  */
 function bulletEdges(bullet) {
-    return (
-      bullet.coords.x < 0 || 
-      bullet.coords.x > config.WIDTH ||
-      bullet.coords.y < 0 || 
-      bullet.coords.y > config.HEIGHT
-    )
+  return (
+    bullet.coords.x < 0
+      || bullet.coords.x > config.WIDTH
+      || bullet.coords.y < 0
+      || bullet.coords.y > config.HEIGHT
+  );
 }
 
 /**
@@ -37,7 +37,7 @@ function playerBullet(playerCoords, bulletCoords) {
 /**
  * Returns true if the player and powerup collide
  * @param {*} playerCoords coordinates of the player
- * @param {*} powerUpCoords coordinates of the powerup 
+ * @param {*} powerUpCoords coordinates of the powerup
  */
 function playerPowerUp(playerCoords, powerUpCoords) {
   return dist(playerCoords.x, playerCoords.y, powerUpCoords.x, powerUpCoords.y) < 20;
@@ -50,7 +50,7 @@ function playerPowerUp(playerCoords, powerUpCoords) {
  * @param {*} powerups array of powerups
  */
 function checkPowerupCollisions(player, powerups) {
-  for (let powerup of powerups) {
+  for (const powerup of powerups) {
     if (playerPowerUp(player.coords, powerup.coords)) {
       powerup.handle(player);
       powerup.toDelete = true;
@@ -62,13 +62,13 @@ function checkPowerupCollisions(player, powerups) {
  * Checks collisions between a player and all the bullets.
  * Sets the toDelete flag is a collision is found
  * @param {*} player the player to check
- * @param {*} bullets array of bullets 
+ * @param {*} bullets array of bullets
  */
 function checkBulletCollisions(player, bullets) {
-  for (let bullet of bullets) {
+  for (const bullet of bullets) {
     if (
-      player.id !== bullet.ownerId &&
-      playerBullet(player.coords, bullet.coords)
+      player.id !== bullet.ownerId
+      && playerBullet(player.coords, bullet.coords)
     ) {
       player.toDelete = true;
       bullet.toDelete = true;
@@ -77,19 +77,19 @@ function checkBulletCollisions(player, bullets) {
 }
 
 /**
- * Checks collisions between all the given objects 
+ * Checks collisions between all the given objects
  * @param {*} players object containing players
  * @param {*} bullets array containing bullets
- * @param {*} powerups array containing powerups 
+ * @param {*} powerups array containing powerups
  */
 function checkCollisions(players, bullets, powerups) {
   let player;
   Object.keys(players).forEach((key, index) => {
     player = players[key];
     checkBulletCollisions(player, bullets);
-    checkPowerupCollisions(player, powerups); 
+    checkPowerupCollisions(player, powerups);
   });
 }
 
 module.exports.bulletEdges = bulletEdges;
-module.exports.checkCollisions = checkCollisions
+module.exports.checkCollisions = checkCollisions;

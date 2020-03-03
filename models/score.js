@@ -4,13 +4,12 @@ const dBconnection = require('./databaseConnection');
 module.exports = dBconnection.define('Score', {
   id: {
     type: DataTypes.INTEGER,
-    primaryKey: true
+    primaryKey: true,
   },
   score: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
 }, {
-  timestamps: false
-})
- 
+  timestamps: false,
+});

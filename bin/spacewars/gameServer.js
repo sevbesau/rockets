@@ -5,18 +5,19 @@ const Game = require('./gameEngine');
 const config = require('./config');
 const { getUserById } = require('../../models/database');
 
-let game, io;
+let game; let
+  io;
 
 // TODO link up session and socketio connection
 
 module.exports.start = function start(server, session) {
   // create a game engine object
-  game = new Game()
+  game = new Game();
 
   // create a server socket
   io = socket(server);
   io.use(sharedSession(session, {
-    autoSave: false
+    autoSave: false,
   }));
 
 
@@ -26,7 +27,7 @@ module.exports.start = function start(server, session) {
   // start the game loops
   setInterval(sendView, config.UPDATE_VIEW_INTERVAL);
   setInterval(updateGame, config.UPDATE_GAME_INTERVAL);
-}
+};
 
 /**
  * gets excecuted when a client connects to a socket,
@@ -36,12 +37,12 @@ module.exports.start = function start(server, session) {
 async function newConnection(socket) {
   // TODO allow users only one connection
   // get the username for the user connecting with this socket
-  let username = "guest"
+  let username = 'guest';
   try {
     if (socket.handshake.session.passport) {
       const user = await getUserById(socket.handshake.session.passport.user);
-      username = user.username
-    } 
+      username = user.username;
+    }
   } catch (err) {
     console.log('[gameserver]', err);
   }
@@ -51,8 +52,8 @@ async function newConnection(socket) {
   game.addPlayer(socket.id, username);
   socket.emit('connected', {
     id: socket.id,
-    window: {width: config.WIDTH, height: config.HEIGHT}
-  }); 
+    window: { width: config.WIDTH, height: config.HEIGHT },
+  });
 
   // callbacks to handle messages from the client
   socket.on('input', handleInput);
@@ -66,7 +67,7 @@ async function newConnection(socket) {
   // removes a client from the game if he disconnects
   function disconnected() {
     game.removePlayer(socket.id);
-    console.log("[gameserver] lost connection to: "+socket.id)
+    console.log(`[gameserver] lost connection to: ${socket.id}`);
   }
 }
 
@@ -75,10 +76,10 @@ async function newConnection(socket) {
  */
 function sendView() {
   io.emit('view', {
-    rockets: game.getRockets(), 
+    rockets: game.getRockets(),
     bullets: game.getBullets(),
-    powerups: game.getPowerups()
-  })
+    powerups: game.getPowerups(),
+  });
 }
 
 /**
