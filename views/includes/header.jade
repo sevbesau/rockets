@@ -10,6 +10,7 @@ nav.navbar.navbar-dark.bg-dark
       .dropdown-menu
         a(href="/games/spacewars").dropdown-item SpaceWars
         a(href="/games/snake").dropdown-item Snake
+        a(href="/games/rubiks").dropdown-item Rubiks
     // leaderboards
     li.nav-item.dropdown
       a(href="#", data-toggle="dropdown", role="button", aria-hashpopup="true", aria-expanded="false").nav-link.dropdown-toggle
@@ -17,6 +18,7 @@ nav.navbar.navbar-dark.bg-dark
       .dropdown-menu
         a(href="/scores/leaderboards/spacewars").dropdown-item SpaceWars
         a(href="/scores/leaderboards/snake").dropdown-item Snake
+        a(href="/scores/leaderboards/rubiks").dropdown-item Rubiks
   // user section 
   ul.nav.justify-content-end
     if !loggedIn

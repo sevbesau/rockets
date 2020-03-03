@@ -1,6 +1,14 @@
-#canvasContainer {
-  text-align: center;
+#canvasContainer .centered canvas {
+  /*text-align: center;*/
+  /*display: inline;*/
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 canvas {
-  display: inline;
+  vertical-align: top;
 }

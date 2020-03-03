@@ -31,4 +31,8 @@ router.get('/snake', (req, res) => {
   res.render('snake', getUserData(req));
 })
 
+router.get('/rubiks', (req, res) => {
+  res.render('rubiks', getUserData(req))
+})
+
 module.exports = router;
