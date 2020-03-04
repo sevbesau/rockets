@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 // const { sanitize } = require('../bin/util');
-const { createUser } = require('../models/database');
+const { createUser, getUserByEmail, getUserByName } = require('../models/database');
 
 const router = express.Router();
 
@@ -24,35 +24,48 @@ router.post('/login', passport.authenticate('local', {
 
 /**
  * Check if all the fields contain the expected data types and formats
+ * Also checks for duplicates in the database
  * @param {*} req the post request containg the user data
  */
-function validateRegisterForm(req) {
-  // VALIDATE email
-  // VALIDATE does email exist in database?
+async function validateRegisterForm(req) {
   const errors = [];
-  console.log(req.body);
   const {
     username, email, password, password2,
   } = req.body;
 
   // are all the fields filled in?
-  // if (!username || !email || !password || !password2) {
-  //   errors.push({ msg: 'Please fill out all fields.' });
-  // }
-  // // do any of the fields contain an ; ?
-  // if (username.contains(";") && email.contains(";") || password.contains(";")) {
-  //   errors.push({msg: "Please dont use ';'"});
-  // }
-  // // is the password long enough?
-  // if (password.length < 6) {
-  //   errors.push({ msg: 'Password must be at least 6 characters.' });
-  // }
+  if (!username || !email || !password || !password2) {
+    errors.push({ msg: 'Please fill out all fields.' });
+  }
+  // do any of the fields contain an ; ?
+  if (username.includes(';') || email.includes(';') || password.includes(';')) {
+    errors.push({ msg: 'Please dont use ;' });
+  }
+  // is the password long enough?
+  if (password.length < 6) {
+    errors.push({ msg: 'Password must be at least 6 characters.' });
+  }
   // do the passwords match?
   if (password !== password2) {
-    errors.push({ msg: 'Passwords must match.' });
+    errors.push({ msg: 'Passwords dont match.' });
   }
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!emailRegex.test(String(email).toLowerCase())) {
+    errors.push({ msg: 'This is an invalid email' });
+  }
+  // does a user with that email already exist?
+  const userByEmail = await getUserByEmail(email);
+  if (userByEmail !== null) {
+    errors.push({ msg: 'A user with this email already exists!' });
+  }
+  // does a user with that username exist?
+  const userByName = await getUserByName(username);
+  if (userByName !== null) {
+    errors.push({ msg: 'That username is already taken!' });
+  }
+
   return {
-    errors, username, email, password,
+    errors, username, email, password, password2,
   };
 }
 
@@ -60,7 +73,7 @@ function validateRegisterForm(req) {
 router.post('/register', async (req, res) => {
   const {
     errors, username, email, password, password2,
-  } = validateRegisterForm(req);
+  } = await validateRegisterForm(req);
   if (errors.length > 0) {
     // invalid form
     res.render('register', {
