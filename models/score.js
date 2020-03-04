@@ -13,5 +13,5 @@ module.exports = dBconnection.define('Score', {
     allowNull: false,
   },
 }, {
-  timestamps: false,
+  timestamps: true,
 });
