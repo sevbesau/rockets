@@ -1,4 +1,9 @@
 const { Sequelize } = require('sequelize');
+const dotenv = require('dotenv');
+
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 // const User = require('./user');
 /**
  * Connect to the mySql database
