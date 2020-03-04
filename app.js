@@ -1,7 +1,4 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-} 
-
+const dotenv = require('dotenv');
 const express = require('express');
 const flash = require('express-flash');
 const Session = require('express-session');
@@ -12,8 +9,12 @@ const initializePassport = require('./bin/passport-config');
 const database = require('./models/database');
 const gameServer = require('./bin/spacewars/gameServer');
 
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
+
 // start an express app
-let app = express();
+const app = express();
 
 // set up template engine
 app.set('views', './views/pages');
@@ -22,12 +23,12 @@ app.set('view engine', 'jade');
 app.use(cors());
 // pass through all information,
 // this way we can acces it through the req object
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }));
 
 const session = Session({
-  secret: process.env.SESSION_SECRET, 
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
 });
 // user stays logged in accross pages
 app.use(session);
@@ -42,7 +43,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// set up passport 
+// set up passport
 initializePassport(passport, database.getUserByEmail, database.getUserById);
 
 // use passport to save a logged in user's information
@@ -61,10 +62,10 @@ app.use('/scores', require('./routes/scores'));
 app.use('/users', require('./routes/users'));
 
 // get the right port
-const PORT = process.env.PORT;
+const { PORT } = process.env;
 
 // start the servers
-let server = app.listen(PORT, (err) => {
+const server = app.listen(PORT, (err) => {
   if (!err) {
     console.log(`Server running and listening on ${PORT}...`);
     gameServer.start(server, session); // start the server for rocketWars
@@ -76,4 +77,3 @@ let server = app.listen(PORT, (err) => {
   }
   else console.log(err);
 });
-
