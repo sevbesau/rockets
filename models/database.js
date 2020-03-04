@@ -7,18 +7,22 @@ const Game = require('./game');
  * Associations
  */
 module.exports.initialize = async () => {
+  // set up associations for score
+  User.hasMany(Score);
+  Game.hasMany(Score);
+  Score.belongsTo(User);
+  Score.belongsTo(Game);
+  // sync();
+};
+
+// DEBUGGING
+// eslint-disable-next-line no-unused-vars
+const sync = async () => {
   // make the tables in the database match our models
   // force: drop the table and create a new one if exists
-  // await User.sync({ force: true })
-  // await Game.sync({ force: true });
-  // await Score.sync({ force: true });
-
-  User.hasMany(Score, { allowNull: false });
-  Game.hasMany(Score, { allowNull: false });
-  Score.belongsTo(User, { allowNull: false });
-  Score.belongsTo(Game, { allowNull: false });
-
-
+  await User.sync({ force: true });
+  await Game.sync({ force: true });
+  await Score.sync({ force: true });
 };
 
 /**
@@ -46,9 +50,8 @@ module.exports.getGameByTitle = async (title) => {
 
 module.exports.createScore = async (score, gameTitle, userId) => {
   const newScore = await Score.create({ score });
-  await score.setGame(await this.getGameByTitle(gameTitle));
-  await score.setUser(await this.getUserById(userId));
-  newScore.save();
+  await newScore.setGame(await this.getGameByTitle(gameTitle));
+  await newScore.setUser(await this.getUserById(userId));
 };
 
 module.exports.getScoresByGameTitle = async (gameTitle) => {
@@ -56,7 +59,7 @@ module.exports.getScoresByGameTitle = async (gameTitle) => {
     where: { title: gameTitle },
     include: Score,
   });
-  console.log(response);
+  return response;
 };
 
 /**
@@ -64,8 +67,7 @@ module.exports.getScoresByGameTitle = async (gameTitle) => {
  */
 
 module.exports.createUser = async (email, username, password) => {
-  // TODO dont create duplicate users
-  const hashedPassword = await bcrypt.hash(password, 10); // encypt the password
+  const hashedPassword = await bcrypt.hash(password, 10);
   await User.create({
     email,
     username,
@@ -75,6 +77,7 @@ module.exports.createUser = async (email, username, password) => {
 
 module.exports.getUserById = async (id) => {
   const response = await User.findOne({ where: { id } });
+  if (!response) return null;
   return response;
 };
 
