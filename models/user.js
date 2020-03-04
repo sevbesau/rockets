@@ -10,6 +10,7 @@ module.exports = dBconnection.define('User', {
   },
   email: {
     type: DataTypes.STRING,
+    unique: true,
     allowNull: false,
   },
   password: {
@@ -21,5 +22,5 @@ module.exports = dBconnection.define('User', {
     allowNull: false,
   },
 }, {
-  timestamps: false,
+  timestamps: true,
 });
