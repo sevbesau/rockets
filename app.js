@@ -65,7 +65,7 @@ const { PORT } = process.env;
 const server = app.listen(PORT, (err) => {
   if (!err) {
     console.log(`[express] Server running and listening on ${PORT}...`);
-    gameServer.start(server); // start the server for rocketWars
+    gameServer.start(server, session); // start the server for rocketWars
   }
   else console.log(err);
 });

@@ -3,7 +3,7 @@ const sharedSession = require('express-socket.io-session');
 
 const Game = require('./gameEngine');
 const config = require('./config');
-//const { getUserById } = require('../../models/database');
+const { getUserById } = require('../../models/database');
 
 // TODO link up session and socketio connection
 let io;
@@ -15,7 +15,7 @@ module.exports.start = function start(server, session) {
 
   // create a server socket
   io = socket(server);
-  //io.use(sharedSession(session));
+  io.use(sharedSession(session));
 
   // bind a socket connection to a funciton
   io.sockets.on('connection', newConnection);
