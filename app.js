@@ -1,21 +1,30 @@
-const dotenv = require('dotenv');
-const express = require('express');
+const cors = require('cors');
 const flash = require('express-flash');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
+const express = require('express');
 const Session = require('express-session');
 const passport = require('passport');
-const morgan = require('morgan');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const gameServer = require('./bin/spacewars/gameServer');
 const initializePassport = require('./bin/passport-config');
+const gameServer = require('./bin/spacewars/gameServer');
 const database = require('./models/database');
 
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
+//if (process.env.NODE_ENV !== 'production') {
+  //dotenv.config();
+//}
+
+process.env.NODE_ENV !== 'production' && dotenv.config();
 
 database.connect();
+initializePassport(passport, database.getUserByEmail, database.getUserById);
+
+const session = Session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: false,
+});
 
 // start an express app
 const app = express();
@@ -24,23 +33,18 @@ const app = express();
 app.set('views', './views/pages');
 app.set('view engine', 'jade');
 
+// general middlewares
 app.use(cors());
-// pass through all information,
-// this way we can acces it through the req object
-app.use(express.urlencoded({ extended: false }));
-app.use(morgan('tiny'));
-app.use(bodyParser.json());
-
-const session = Session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: false,
-});
-// user stays logged in accross pages
-app.use(session);
-
-// flash handles messages between page renders
 app.use(flash());
+app.use(morgan('tiny'));
+app.use(bodyParser.json()); // TODO needed?
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: false }));
+
+// login middlewares
+app.use(session);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // global vars for sending messages between pages
 app.use((req, res, next) => {
@@ -49,32 +53,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// set up passport
-initializePassport(passport, database.getUserByEmail, database.getUserById);
-
-// use passport to save a logged in user's information
-app.use(passport.initialize());
-
-// works with session to keep user logged in during one session
-app.use(passport.session());
-
-// host the files in the 'public' folder
-app.use(express.static('public'));
-
+// TODO refactor to use index.js as entry
 // define the routes for / and /game
 app.use('/', require('./routes/index'));
 app.use('/games', require('./routes/games'));
-//app.use('/scores', require('./routes/scores'));
+app.use('/scores', require('./routes/scores'));
 app.use('/users', require('./routes/users'));
 
-// get the right port
+// start listening
 const { PORT } = process.env;
-
-// start the servers
 const server = app.listen(PORT, (err) => {
   if (!err) {
     console.log(`[express] Server running and listening on ${PORT}...`);
-
     gameServer.start(server); // start the server for rocketWars
   }
   else console.log(err);
