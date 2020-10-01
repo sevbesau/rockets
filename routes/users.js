@@ -15,6 +15,12 @@ router.get('/register', (req, res) => {
   res.render('register', {});
 });
 
+router.get('/logout', (req, res) => {
+  req.session.destroy();
+  req.logout();
+  res.redirect('/');
+})
+
 // route for the login form
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
