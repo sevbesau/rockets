@@ -6,8 +6,8 @@ module.exports = {
   UPDATE_GAME_INTERVAL: 25,
 
   // default canvas size
-  WIDTH: 600,
-  HEIGHT: 300,
+  WIDTH: 1600,
+  HEIGHT: 900,
 
   // rocket
   ACC_RATE: 0.5,

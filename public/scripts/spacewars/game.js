@@ -4,6 +4,8 @@ let rockets;
 let powerups;
 let ammo;
 let id;
+let coordScale = { width: 1, height: 1 }
+let windowSize;
 
 function preload() {
   // we load all our images first
@@ -20,9 +22,25 @@ function preload() {
 
 function onConnection(data) {
   id = data.id;
+  windowSize = data.window;
+
   // create a canvas and put it in the div #canvasContainer
-  createCanvas(data.window.width, data.window.height).parent('canvasContainer');
+  canvasWidth = windowWidth;
+  canvasHeight = document.getElementById('canvasContainer').offsetHeight;
+  coordScale.width = canvasWidth / windowSize.width;
+  coordScale.height = canvasHeight / windowSize.height;
+  createCanvas(canvasWidth, canvasHeight).parent('canvasContainer');
 }
+
+function windowResized() {
+  resizeCanvas(5, 5);
+  canvasWidth = windowWidth;
+  canvasHeight = document.getElementById('canvasContainer').offsetHeight;
+  coordScale.width = canvasWidth / windowSize.width;
+  coordScale.height = canvasHeight / windowSize.height;
+  resizeCanvas(canvasWidth, canvasHeight);
+}
+
 
 /**
  * handles data from the server about the objects in the game

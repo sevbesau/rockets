@@ -16,15 +16,15 @@ html
 
   body
     
-    include ../includes/header
+    .box
+      .row.header 
+        include ../includes/header
 
-    .container
-      block content
+      .row.content
+        block content
+        block canvasContent
 
-    block canvasContent
-
-    // TODO make footer with bootstrap and move to own file
-    .footer
+      .row.footer
     
 
 

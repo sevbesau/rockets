@@ -1,12 +1,17 @@
-#canvasContainer .centered canvas {
-  /*text-align: center;*/
-  /*display: inline;*/
+#canvasContainer {
+  height: auto;
+  width: 100%;
+  text-align: center;
+} 
+
+#canvasContainer canvas {
+  display: inline;
 }
 
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 canvas {

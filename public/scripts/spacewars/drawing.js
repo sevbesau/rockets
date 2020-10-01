@@ -2,6 +2,10 @@ let rocketImg;
 let rocketAccelerateImg;
 let images;
 
+function scaledTranslate(coords) {
+  translate(coords.x * coordScale.width, coords.y * coordScale.height);
+}
+
 function loadImages() {
   images = {
     rocket: {
@@ -25,7 +29,7 @@ function drawRocket(rocket) {
 
   }
   push();
-  translate(rocket.coords.x, rocket.coords.y);
+  scaledTranslate(rocket.coords);
 
   fill(255);
   textSize(10);
@@ -47,7 +51,7 @@ function drawBullet(bullet) {
   fill('red');
   noStroke();
   push();
-  translate(bullet.coords.x, bullet.coords.y);
+  scaledTranslate(bullet.coords);
   ellipse(0, 0, 5);
   pop();
 }
@@ -57,7 +61,7 @@ function drawPowerUp(powerup) {
   fill(powerup.type == 'ammo' ? 'green' : 'yellow');
   noStroke();
   push();
-  translate(powerup.coords.x, powerup.coords.y);
+  scaledTranslate(powerup.coords);
   ellipse(0, 0, 15);
   image(images.powerup[powerup.type], 0, 0, 12, 12);
   pop();
