@@ -1,17 +1,18 @@
 // TODO refactor and comment
-function Apple(x, y) {
-  this.x = x;
-  this.y = y;
-  this.size = 20;
-  this.scale = floor(height / this.size);
+class Apple {
+  constructor(coords) {
+    this.coords = coords;
+    this.size = 20;
+  }
 
-  this.draw = function () {
+  draw() {
+    noStroke();
     fill(color(255, 0, 0));
-    ellipse(this.x, this.y, 20);
-  };
+    ellipseMode(CORNER);
+    ellipse(this.coords.x*scale, this.coords.y*scale, scale);
+  }
 
-  this.update = function () {
-    this.x = floor(random(floor(width / this.size))) * this.scale + 10;
-    this.y = floor(random(floor(height / this.size))) * this.scale + 10;
-  };
+  update(coords) {
+    this.coords = coords;
+  }
 }

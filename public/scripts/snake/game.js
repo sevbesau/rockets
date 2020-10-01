@@ -1,42 +1,66 @@
 // TODO refactor and comment
 let score;
+let scale;
+let container;
+let canvas;
+const SECTIONS = 20;
+
+function calculateCanvasSize() {
+  container = {
+    width: windowWidth,
+    height: document.getElementById('canvasContainer').offsetHeight,
+  }
+  canvas = { 
+    width: container.width > container.height ? container.height : container.width, 
+    height: container.width > container.height ? container.height : container.width, 
+  }
+  scale = canvas.width / SECTIONS;
+}
+
+function windowResized() {
+  resizeCanvas(5, 5);
+  calculateCanvasSize();
+  resizeCanvas(canvas.width, canvas.height);
+}
 
 function setup() {
-  // runs once on startup
-  createCanvas(600, 400).parent('canvasContainer');
+  calculateCanvasSize();
+  createCanvas(canvas.width, canvas.height).parent('canvasContainer');
 
-  s = new Snake(20);
-  a = new Apple(70, 70);
+  snake = new Snake();
+  apple = new Apple(createVector(Math.floor(random(0, 20)), Math.floor(random(0, 20))));
   frameRate(10);
   score = 0;
 }
 
 function draw() {
-  // repeats every frame
   background(51);
   textSize(50);
   text(score, 10, 50);
 
-  a.draw();
-  s.update();
-  s.draw();
-  score = s.death(score);
+  apple.draw();
 
-  if (s.x == a.x - 10 && s.y == a.y - 10) {
-  	s.grow();
-  	a.update();
+  snake.update();
+  snake.draw();
+
+  if (snake.isEatingItself()) 
+    snake.die();
+
+  if (snake.coords.equals(apple.coords)) {
+  	snake.grow();
+  	apple.update(createVector(Math.floor(random(0, 20)), Math.floor(random(0, 20))));
   	score += 10;
   }
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW && s.yvel != 1) {
-    s.dir(0, -1);
-  } else if (keyCode === DOWN_ARROW && s.yvel != -1) {
-    s.dir(0, 1);
-  } else if (keyCode === LEFT_ARROW && s.xvel != 1) {
-    s.dir(-1, 0);
-  } else if (keyCode === RIGHT_ARROW && s.xvel != -1) {
-    s.dir(1, 0);
+  if (keyCode === UP_ARROW && snake.vel.y != 1) {
+    snake.dir(0, -1);
+  } else if (keyCode === DOWN_ARROW && snake.vel.y != -1) {
+    snake.dir(0, 1);
+  } else if (keyCode === LEFT_ARROW && snake.vel.x != 1) {
+    snake.dir(-1, 0);
+  } else if (keyCode === RIGHT_ARROW && snake.vel.x != -1) {
+    snake.dir(1, 0);
   }
 }
