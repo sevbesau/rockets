@@ -3,11 +3,11 @@ const express = require('express');
 const flash = require('express-flash');
 const Session = require('express-session');
 const passport = require('passport');
-const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const gameServer = require('./bin/spacewars/gameServer');
 const initializePassport = require('./bin/passport-config');
 const database = require('./models/database');
 
@@ -15,14 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
 
-mongoose.connect(process.env.MONGOURI, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-})
-.then(() => console.log('MongoDB database connected...'))
-.catch((err) => console.log(err));
+database.connect();
 
 // start an express app
 const app = express();
@@ -80,15 +73,9 @@ const { PORT } = process.env;
 // start the servers
 const server = app.listen(PORT, (err) => {
   if (!err) {
-    console.log(`Server running and listening on ${PORT}...`);
+    console.log(`[express] Server running and listening on ${PORT}...`);
 
-    const gameServer = require('./bin/spacewars/gameServer');
     gameServer.start(server); // start the server for rocketWars
-    //database.initialize();
-    //require('./models/databaseConnection'); // start the database
-  //  database.createGame("Snake");
-  //  database.createScore(10, "Snake", 1);
-  //  database.getScoresByGameTitle("Snake");
   }
   else console.log(err);
 });
