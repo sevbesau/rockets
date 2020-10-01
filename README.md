@@ -3,78 +3,50 @@
 ## TODO:
 
 ### spacewars game mechanics:
-- twinkle twinkle litle star
+- twinkly stars
 - powerups destroyed or picked by bullet
 - asteroids?
 - score system
 
 #### powerups:
 - rapidFire
+- spreadFire
 
 ### Login an Register form
 - validate
-- sanitize
 
 ### pages:
+- games overview -> create
 - games -> styling
 - leaderboards -> create
 
-### page layout:
+### page components
 - footer
 
 ### bugs
 - header dropdown alligned left
 
 ## games DB
+- Database: rockets
+
 ### TABLE Users
-| name     | type             | null     | primary | extra          |
-| -------- | ---------------- | -------- |:-------:| -------------- |
-| id       | unsigned int(11) | not null | *       | auto_increment |
-| email    | varchar(255)      | not null | 
-| password | varchar(255)      | not null |
-| username | varchar(255)      | not null |
+| name     | type             | null     |
+| -------- | ---------------- | -------- |
+| email    | String           | not null | 
+| password | String           | not null |
+| username | String           | not null |
+| imageUrl | String           |          |
 
-Create table command: 
-
-```
-create table Users(
-  id int(11) unsigned auto_increment primary key not null, 
-  username varchar(255) not null, 
-  password varchar(255) not null, 
-  email varchar(255) not null
-);
-``` 
 
 ### TABLE Scores
-| name     | type             | null     | primary | extra          |
-| -------- | ---------------- | -------- |:-------:| -------------- |
-| id       | unsigned int(11) | not null | *       | auto_increment |
-| user_id  | unsigned int(11) | not null 
-| game_id  | unsigned int(11) | not null 
-| score    | unsigned int(11) | not null
+| name     | type             | null     |
+| -------- | ---------------- | -------- |
+| user_id  | ObjectId         | not null |
+| game_id  | ObjectId         | not null |
+| score    | Number           | not null |
 
-Create table command: 
-
-```
-create table Scores(
-  id int(11) unsigned auto_increment not null primary key, 
-  userId int(11) unsigned not null, 
-  gameId int(11) unsigned not null, 
-  score int(11) unsigned not null 
-);
-```
 
 ### TABLE Games
-| name     | type             | null     | primary | extra          |
-| -------- | ---------------- | -------- |:-------:| -------------- |
-| id       | unsigned int(11) | not null | *       | auto_increment |
-| title    | varchar(20)      | not null |
-
-Create table command: 
-
-```
-create table Games(
-  id int(11) unsigned auto_increment not null primary key,
-  title varchar(255) not null
-);
-```
+| name     | type             | null     | 
+| -------- | ---------------- | -------- |
+| title    | String           | not null |
