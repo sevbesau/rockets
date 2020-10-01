@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 const config = require('./config');
 const util = require('../util');
 
@@ -11,10 +12,6 @@ class PowerUp {
     setTimeout(() => {
       this.toDelete = true;
     }, lifeSpan * 1000);
-  }
-
-  handle(rocket) {
-    // Do something to the rocket
   }
 }
 
@@ -75,6 +72,8 @@ function powerupFactory(type) {
         util.randomInt(5) + config.MIN_BOOST_DURATION,
       );
       break;
+    default:
+      throw new Error(`Powerup type not found: ${type}`);
   }
   return powerup;
 }

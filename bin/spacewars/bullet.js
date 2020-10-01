@@ -17,6 +17,10 @@ class Bullet {
     this.coords.x += config.BULLET_VEL * Math.cos(this.heading);
     this.coords.y += config.BULLET_VEL * Math.sin(this.heading);
   }
+
+  delete() {
+    this.toDelete = true;
+  }
 }
 
 module.exports = Bullet;

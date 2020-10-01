@@ -3,15 +3,26 @@ const express = require('express');
 const flash = require('express-flash');
 const Session = require('express-session');
 const passport = require('passport');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const initializePassport = require('./bin/passport-config');
 const database = require('./models/database');
-const gameServer = require('./bin/spacewars/gameServer');
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
+
+mongoose.connect(process.env.MONGOURI, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+})
+.then(() => console.log('MongoDB database connected...'))
+.catch((err) => console.log(err));
 
 // start an express app
 const app = express();
@@ -24,10 +35,12 @@ app.use(cors());
 // pass through all information,
 // this way we can acces it through the req object
 app.use(express.urlencoded({ extended: false }));
+app.use(morgan('tiny'));
+app.use(bodyParser.json());
 
 const session = Session({
   secret: process.env.SESSION_SECRET,
-  resave: false,
+  resave: true,
   saveUninitialized: false,
 });
 // user stays logged in accross pages
@@ -58,7 +71,7 @@ app.use(express.static('public'));
 // define the routes for / and /game
 app.use('/', require('./routes/index'));
 app.use('/games', require('./routes/games'));
-app.use('/scores', require('./routes/scores'));
+//app.use('/scores', require('./routes/scores'));
 app.use('/users', require('./routes/users'));
 
 // get the right port
@@ -68,9 +81,11 @@ const { PORT } = process.env;
 const server = app.listen(PORT, (err) => {
   if (!err) {
     console.log(`Server running and listening on ${PORT}...`);
-    gameServer.start(server, session); // start the server for rocketWars
-    database.initialize();
-    require('./models/databaseConnection'); // start the database
+
+    const gameServer = require('./bin/spacewars/gameServer');
+    gameServer.start(server); // start the server for rocketWars
+    //database.initialize();
+    //require('./models/databaseConnection'); // start the database
   //  database.createGame("Snake");
   //  database.createScore(10, "Snake", 1);
   //  database.getScoresByGameTitle("Snake");

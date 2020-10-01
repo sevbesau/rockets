@@ -37,10 +37,6 @@ async function validateRegisterForm(req) {
   if (!username || !email || !password || !password2) {
     errors.push({ msg: 'Please fill out all fields.' });
   }
-  // do any of the fields contain an ; ?
-  if (username.includes(';') || email.includes(';') || password.includes(';')) {
-    errors.push({ msg: 'Please dont use ;' });
-  }
   // is the password long enough?
   if (password.length < 6) {
     errors.push({ msg: 'Password must be at least 6 characters.' });
@@ -49,6 +45,7 @@ async function validateRegisterForm(req) {
   if (password !== password2) {
     errors.push({ msg: 'Passwords dont match.' });
   }
+  // eslint-disable-next-line no-useless-escape
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (!emailRegex.test(String(email).toLowerCase())) {
     errors.push({ msg: 'This is an invalid email' });

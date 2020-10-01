@@ -10,7 +10,7 @@ class Game {
     this.players = {};
     this.bullets = [];
     this.powerups = [];
-    this.d = new Date();
+    this.d = new Date(); // TODO why????
   }
 
   /**
@@ -39,33 +39,17 @@ class Game {
     delete this.players[playerId];
   }
 
-  removeBullet(bullet) {
-    this.bullets = this.bullets.filter((item) => item !== bullet);
-  }
-
-  removePowerup(powerup) {
-    this.powerups = this.powerups.filter((item) => item !== powerup);
-  }
-
   /**
    * Removes all objects in the game that have their toDelete flag set
    */
   removeObjects() {
-    for (const playerId of this.ids) {
+    this.ids.forEach((playerId) => {
       if (this.players[playerId].toDelete) {
         this.removePlayer(playerId);
       }
-    }
-    for (const bullet of this.bullets) {
-      if (bullet.toDelete) {
-        this.removeBullet(bullet);
-      }
-    }
-    for (const powerup of this.powerups) {
-      if (powerup.toDelete) {
-        this.removePowerup(powerup);
-      }
-    }
+    });
+    this.bullets = this.bullets.filter((bullet) => !bullet.toDelete);
+    this.powerups = this.powerups.filter((powerup) => !powerup.toDelete);
   }
 
 
@@ -88,19 +72,21 @@ class Game {
   }
 
   updatePlayers() {
-    for (const playerId of this.ids) {
+    this.ids.forEach((playerId) => {
       if (this.players[playerId]) { // only update a player if it still exists
         this.players[playerId].update();
         this.players[playerId].turn(this.players[playerId].dir);
       }
-    }
+    });
   }
 
   updateBullets() {
-    for (const bullet of this.bullets) {
+    this.bullets.forEach((bullet) => {
       bullet.update();
-      if (collisions.bulletEdges(bullet)) this.removeBullet(bullet);
-    }
+      if (collisions.bulletEdges(bullet)) {
+        bullet.delete();
+      }
+    });
   }
 
   checkCollisions() {
@@ -142,7 +128,7 @@ class Game {
 
   getRockets() {
     const rockets = [];
-    for (const id of this.ids) {
+    this.ids.forEach((id) => {
       rockets.push({
         coords: this.players[id].coords,
         angle: this.players[id].angle,
@@ -151,7 +137,7 @@ class Game {
         username: this.players[id].username,
         id,
       });
-    }
+    });
     return rockets;
   }
 

@@ -1,29 +1,29 @@
 const bcrypt = require('bcrypt');
 const User = require('./user');
-const Score = require('./score');
-const Game = require('./game');
+//const Score = require('./score');
+//const Game = require('./game');
 
 /**
  * Associations
  */
-module.exports.initialize = async () => {
+//module.exports.initialize = async () => {
   // set up associations for score
-  User.hasMany(Score);
-  Game.hasMany(Score);
-  Score.belongsTo(User);
-  Score.belongsTo(Game);
+  //User.hasMany(Score);
+  //Game.hasMany(Score);
+  //Score.belongsTo(User);
+  //Score.belongsTo(Game);
   // sync();
-};
+//};
 
 // DEBUGGING
 // eslint-disable-next-line no-unused-vars
-const sync = async () => {
+//const sync = async () => {
   // make the tables in the database match our models
   // force: drop the table and create a new one if exists
-  await User.sync({ force: true });
-  await Game.sync({ force: true });
-  await Score.sync({ force: true });
-};
+  //await User.sync({ force: true });
+  //await Game.sync({ force: true });
+  //await Score.sync({ force: true });
+//};
 
 /**
  * Game stuff
@@ -68,27 +68,30 @@ module.exports.getScoresByGameTitle = async (gameTitle) => {
 
 module.exports.createUser = async (email, username, password) => {
   const hashedPassword = await bcrypt.hash(password, 10);
-  await User.create({
+  const newUser = User({
     email,
     username,
     password: hashedPassword,
   });
+  const user = await newUser.save();
 };
 
+// TODO
 module.exports.getUserById = async (id) => {
-  const response = await User.findOne({ where: { id } });
+  const response = await User.findById(id);
   if (!response) return null;
   return response;
 };
 
+// TODO
 module.exports.getUserByEmail = async (email) => {
-  const response = await User.findOne({ where: { email } });
+  const response = await User.findOne({ email: email });
   if (!response) return null;
   return response;
 };
 
 module.exports.getUserByName = async (username) => {
-  const response = await User.findOne({ where: { username } });
+  const response = await User.findOne({ username: username });
   if (!response) return null;
   return response;
 };

@@ -1,26 +1,23 @@
-const { DataTypes } = require('sequelize');
-const dBconnection = require('./databaseConnection');
+const {Schema, model } = require('mongoose');
 
-module.exports = dBconnection.define('User', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false,
-  },
+const UserSchema = new Schema({
   email: {
-    type: DataTypes.STRING,
+    type: String,
+    required: true,
     unique: true,
-    allowNull: false,
   },
   password: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   username: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
-}, {
-  timestamps: true,
+  imageUrl: {
+    type: String,
+  },
 });
+
+const User = model('user', UserSchema);
+module.exports = User;
