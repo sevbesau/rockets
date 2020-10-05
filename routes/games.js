@@ -9,7 +9,7 @@ const { getScoreByUserId, updateScore, getHighScore, createScore, getGames } = r
  */
 router.get('/', async (req, res) => {
   const games = await getGames();
-  req.json(games);
+  res.json(games);
 }) 
 
 router.get('/:game', async (req, res) => {
