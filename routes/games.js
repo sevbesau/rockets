@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const { getUserData } = require('../bin/util');
-const { getScoreByUserId, updateScore, getHighScore } = require('../models/database');
+const { getScoreByUserId, updateScore, getHighScore, createScore } = require('../models/database');
 
 /**
  * Middelware to check if a user is logged in,
@@ -33,19 +33,22 @@ router.post('/:game', async (req, res) => {
   if (req.user) {
     const userId = req.user._id;
     const score = await getScoreByUserId(game, userId);
-    if (score && score.points < req.body.points) {
-      await updateScore(game, userId, req.body.points);
-      res.render(game, { 
-        ...getUserData(req),
-        highScore: { 
-          ...await getHighScore(game),
-          new: true 
-        }
-      });
+    if (score) {
+      if (score.points < req.body.points) {
+        await updateScore(game, userId, req.body.points);
+        res.render(game, { 
+          ...getUserData(req),
+          highScore: { 
+            ...await getHighScore(game),
+            new: true 
+          }
+        });
+      } 
+    } else {
+      await createScore(req.body.points, userId, game);
     }
   } 
-  res.redirect('/login');
-  console.log('we are here')
+  // TODO ask user to log in when new highscore
 })
 
 module.exports = router;
