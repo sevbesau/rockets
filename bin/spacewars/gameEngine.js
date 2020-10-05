@@ -101,6 +101,7 @@ class Game {
    */
   handleInput(playerId, input) {
     const player = this.players[playerId];
+    if (!player) return;
 
     // handle shooting
     if (input.SPACE) {
