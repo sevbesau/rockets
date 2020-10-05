@@ -4,6 +4,7 @@ let scale;
 let container;
 let canvas;
 const SECTIONS = 20;
+let growing = true;
 
 function calculateCanvasSize() {
   container = {
@@ -42,9 +43,12 @@ function draw() {
 
   snake.update();
   snake.draw();
-
-  if (snake.isEatingItself()) 
+  
+  if (snake.isEatingItself()) {
     snake.die();
+    postScore(score);
+    score = 0;
+  }
 
   if (snake.coords.equals(apple.coords)) {
   	snake.grow();

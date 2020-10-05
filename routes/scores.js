@@ -1,8 +1,18 @@
 const express = require('express');
 
 const router = express.Router();
+const { getScoresByGameName } = require('../models/database');
 const { getUserData } = require('../bin/util');
 
+router.get('/leaderboards/:game', async (req, res) => {
+  res.render('leaderboard', {
+    ...getUserData(req),
+    game: req.params.game,
+    scores: await getScoresByGameName(req.params.game),
+  });
+});
+
+/*
 // render the spacewars leaderboard
 router.get('/leaderboards/spacewars', (req, res) => {
   res.render('leaderboard', {
@@ -18,5 +28,6 @@ router.get('/leaderboards/snake', (req, res) => {
     ...getUserData(req),
   });
 });
+*/
 
 module.exports = router;

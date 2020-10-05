@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const User = require('./user');
-//const Score = require('./score');
-//const Game = require('./game');
+const Score = require('./score');
+const Game = require('./game');
 
 module.exports.connect = () => {
   mongoose.connect(process.env.MONGOURI, {
@@ -14,6 +14,62 @@ module.exports.connect = () => {
   })
   .then(() => console.log('[mongodb] connected...'))
   .catch((err) => console.log('[mongodb] connection failed', err));
+  //this.createScore(10, '5f750ea9aae24d37ef1efbc9', 'snake');
+}
+
+/**
+ * Game 
+ */
+module.exports.createGame = async (title) => {
+  const newGame = Game({ title });
+  await newGame.save();
+};
+
+module.exports.getGameId = async (title) => {
+  const response = await Game.findOne({ title });
+  if (!response) return null;
+  return response._id;
+}
+
+
+/**
+ * Score
+ */
+module.exports.createScore = async (points, userId, gameTitle) => {
+  const newScore = Score({ 
+    points,
+    userId,
+    gameId: await this.getGameId(gameTitle),
+  });
+  await newScore.save();
+}
+
+module.exports.getScoresByGameName = async (game) => {
+  const gameId = await this.getGameId(game);
+  const scores = await Score.find({ gameId });
+  if (!scores) return null;
+  return scores;
+};
+
+module.exports.getScoreByUserId = async (game, userId) => {
+  const gameId = await this.getGameId(game);
+  const score = await Score.findOne({ gameId, userId });
+  if (!score) return null;
+  return score;
+}
+
+module.exports.updateScore = async (game, userId, points) => {
+  const currentScore = await this.getScoreByUserId(game, userId);
+  const highScore = await Score.findByIdAndUpdate({ _id: currentScore._id }, { points });
+  return highScore;
+}
+
+module.exports.getHighScore = async (game) => {
+  const gameId = await this.getGameId(game);
+  const scores = await Score.find({ gameId });
+  scores.sort((a, b) => parseInt(b.points) - parseInt(a.points));
+  const owner = await User.findById(scores[0].userId);
+  return { points: scores[0].points, owner: owner.username};
 }
 
 /**

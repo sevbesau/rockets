@@ -2,7 +2,7 @@ html
   head
     link(rel="stylesheet", href="/stylesheets/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/layout.css')
-    //link(rel='stylesheet', href='/stylesheets/header.css')
+    link(rel='stylesheet', href='/stylesheets/footer.css')
     block styles
 
     block title
@@ -20,11 +20,14 @@ html
       .row.header 
         include ../includes/header
 
-      .row.content
+      .container
         block content
+
+      .row.content
         block canvasContent
 
       .row.footer
+        include ../includes/footer
     
 
 

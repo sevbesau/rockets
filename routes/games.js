@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const { getUserData } = require('../bin/util');
+const { getScoreByUserId, updateScore, getHighScore } = require('../models/database');
 
 /**
  * Middelware to check if a user is logged in,
@@ -22,18 +23,29 @@ function checkAuthenticated(req, res, next) {
 /**
  * contains all the routes for the game related pages
  */
+router.get('/:game', async (req, res) => {
+  const { game } = req.params;
+  res.render(game, { ...getUserData(req), highScore: await getHighScore(game) });
+})
 
-router.get('/spacewars', (req, res) => {
-  res.render('spacewars', getUserData(req));
-  // res.render('game', {loggedIn: true, username: req.user.name});
-});
-
-router.get('/snake', (req, res) => {
-  res.render('snake', getUserData(req));
-});
-
-router.get('/rubiks', (req, res) => {
-  res.render('rubiks', getUserData(req));
-});
+router.post('/:game', async (req, res) => {
+  const game = req.params.game;
+  if (req.user) {
+    const userId = req.user._id;
+    const score = await getScoreByUserId(game, userId);
+    if (score && score.points < req.body.points) {
+      await updateScore(game, userId, req.body.points);
+      res.render(game, { 
+        ...getUserData(req),
+        highScore: { 
+          ...await getHighScore(game),
+          new: true 
+        }
+      });
+    }
+  } 
+  res.redirect('/login');
+  console.log('we are here')
+})
 
 module.exports = router;

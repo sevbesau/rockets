@@ -1,18 +1,12 @@
-const { DataTypes } = require('sequelize');
-const dBconnection = require('./databaseConnection');
+const { Schema, model } = require('mongoose');
 
-module.exports = dBconnection.define('Game', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false,
-  },
+const GameSchema = new Schema({
   title: {
-    type: DataTypes.STRING,
+    type: String,
     unique: true,
-    allowNull: false,
+    required: true,
   },
-}, {
-  timestamps: false,
 });
+
+const Game = model('game', GameSchema);
+module.exports = Game;

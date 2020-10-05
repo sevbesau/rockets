@@ -37,9 +37,10 @@ app.set('view engine', 'jade');
 app.use(cors());
 app.use(flash());
 app.use(morgan('tiny'));
-app.use(bodyParser.json()); // TODO needed?
+//app.use(bodyParser.json()); // TODO needed?
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // login middlewares
 app.use(session);
