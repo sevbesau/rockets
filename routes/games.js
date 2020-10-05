@@ -32,6 +32,7 @@ router.post('/:game', async (req, res) => {
       await createScore(req.body.points, userId, game);
     }
   } 
+  res.json('success');
   // TODO ask user to log in when new highscore
 })
 
