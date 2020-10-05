@@ -46,7 +46,7 @@ function draw() {
   
   if (snake.isEatingItself()) {
     snake.die();
-    postScore(score);
+    if (score > 0) postScore(score);
     score = 0;
   }
 
