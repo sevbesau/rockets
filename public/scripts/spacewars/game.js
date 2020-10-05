@@ -81,14 +81,13 @@ function draw() {
   background(50);
   
   if (!alive) {
-    postScore(score).then(() => {
-      if (confirm('You died...\nPlay again?')) {
-        alive = true;
-        socket.emit('respawn');
-      } else {
-        window.location.href = '/'
-      }  
-    });
+    if (confirm('You died...\nPlay again?')) {
+      alive = true;
+      socket.emit('respawn');
+    } else {
+      window.location.href = '/'
+    }  
+    postScore(score);
   }
 
   drawAmmo();
