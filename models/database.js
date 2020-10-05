@@ -67,6 +67,9 @@ module.exports.updateScore = async (game, userId, points) => {
 module.exports.getHighScore = async (game) => {
   const gameId = await this.getGameId(game);
   const scores = await Score.find({ gameId });
+  if (!scores) {
+    return null;
+  }
   scores.sort((a, b) => parseInt(b.points) - parseInt(a.points));
   const owner = await User.findById(scores[0].userId);
   return { points: scores[0].points, owner: owner.username};
