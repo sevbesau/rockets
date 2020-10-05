@@ -12,7 +12,6 @@ function preload() {
   loadImages();
 
   // open a socket connection
-  // TODO connect to server ip
   socket = io.connect(`${window.location.protocol}//${window.location.host}`);
 
   // handle messages from the socket

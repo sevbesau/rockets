@@ -4,6 +4,38 @@ block title
   title Home
 
 block content 
-  h1 Welcome home!
-
-// TODO build homepage
+  h1.mt-5 Welcome to games.sevbesau.xyz
+  p This website hosts games I made using javascript and the 
+    a(href="https://p5js.org/") P5js libraries
+  p If you are logged in, your personal best score will be save for each game. Your scores will also appear in the leaderboards for the game.
+  
+  .games.mt-5
+    h2 Games you can play here:
+    ul
+      li
+        h3
+          a(href="http://localhost:8080/games/spacewars") Spacewars
+        p A realtime multiplayer game where you have to shoot other player to gain points
+      li
+        h3
+          a(href="http://localhost:8080/games/snake") Snake
+        p Just another snake clone...
+      li
+        h3
+          a(href="http://localhost:8080/games/rubiks") Rubik's cube
+        p Title says it all... I dare you to solve it!
+      
+  h2.mt-5 Comments, suggestions, bugs? Let me know!
+  .row
+    .col-md-6
+      form(action="/messages", method="POST")  
+        .form-group
+          label(for="type") Type:
+          select(name="type").form-control#type
+            option(value="bug") Bug
+            option(value="suggestion") Suggestion
+            option(value="comment") Comment
+        .form-group
+          label(for="message") Message:
+          input(type="text", name="message").form-control#message
+        button(type="submit").btn.btn-primary.btn-block Submit
