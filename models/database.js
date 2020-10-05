@@ -15,6 +15,9 @@ module.exports.connect = () => {
   })
   .then(() => console.log('[mongodb] connected...'))
   .catch((err) => console.log('[mongodb] connection failed', err));
+  this.createGame('snake');
+  this.createGame('spacewars');
+  this.createGame('rubiks');
   //this.createScore(10, '5f750ea9aae24d37ef1efbc9', 'snake');
 }
 
