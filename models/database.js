@@ -67,7 +67,7 @@ module.exports.updateScore = async (game, userId, points) => {
 module.exports.getHighScore = async (game) => {
   const gameId = await this.getGameId(game);
   const scores = await Score.find({ gameId });
-  if (!scores) {
+  if (!scores[0]) {
     return null;
   }
   scores.sort((a, b) => parseInt(b.points) - parseInt(a.points));
