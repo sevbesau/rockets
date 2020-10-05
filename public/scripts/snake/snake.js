@@ -2,15 +2,20 @@ class Snake {
   constructor() {
     this.coords = createVector(5, 5);
     this.vel = createVector(1, 0);
-    this.len = 2;
+    this.len = 5;
     this.tail = [];
   }
 
   update() {
-    this.tail[this.len - 1] = createVector(this.coords.x, this.coords.y);
-    for (let i = 0; i < this.len - 1; i++) {
+    if (this.len != this.tail.length) {
+      this.tail[this.tail.length] = createVector(this.coords.x, this.coords.y);
+    } else {
+      this.tail[this.tail.length-1] = createVector(this.coords.x, this.coords.y);
+    }
+    for (let i = 0; i < this.tail.length-1; i++) {
       this.tail[i] = this.tail[i + 1];
     }
+
     this.coords.x += this.vel.x;
     this.coords.y += this.vel.y;
     this.blocked = false;
@@ -28,7 +33,7 @@ class Snake {
   }
 
   isEatingItself() {
-    const head = this.tail[this.len - 1];
+    const head = this.tail[this.tail.length - 1];
     for (let i = 0; i < this.len - 2; i++) {
       if (head.equals(this.tail[i])) {
         return true;
@@ -38,6 +43,7 @@ class Snake {
   };
   
   die() {
+    log("died")
     this.tail = [];
     this.len = 2;
   }
