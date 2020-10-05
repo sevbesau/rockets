@@ -13,7 +13,7 @@ function preload() {
 
   // open a socket connection
   // TODO connect to server ip
-  socket = io.connect('http://localhost:8080');
+  socket = io.connect(`${window.location.protocol}//${window.location.host}`);
 
   // handle messages from the socket
   socket.on('connected', onConnection);
