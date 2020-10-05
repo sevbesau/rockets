@@ -36,9 +36,14 @@ module.exports.getMessages = async () => {
  * Game 
  */
 module.exports.createGame = async (title) => {
-  const newGame = Game({ title });
+  const newGame = await Game({ title });
   await newGame.save();
 };
+
+module.exports.getGames = async () => {
+  const games = await Game.find();
+  return games;
+}
 
 module.exports.getGameId = async (title) => {
   const response = await Game.findOne({ title });
@@ -70,7 +75,6 @@ module.exports.getScoresByGameName = async (game) => {
       user: (await User.findById(score.userId)).username
     });
   }
-  console.log(scoresWithUsername);
   return scoresWithUsername;
 };
 
