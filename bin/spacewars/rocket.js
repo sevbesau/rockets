@@ -3,6 +3,7 @@ const config = require('./config');
 class Rocket {
   constructor(x, y, id, username) {
     this.username = username; // the username of the player controlling the rocket
+    this.score = 0; // the score
     this.coords = { x, y }; // the coords of the player
     this.vel = { x: 0, y: 0 }; // the velocity of the player
     this.id = id; // the id of the client the rocket belongs to
@@ -12,6 +13,13 @@ class Rocket {
     this.thrusting = false; // if the rocket is applying thrust
     this.speedBoost = 0; // the boost in velocity given by a powerup
     this.dir = 0;
+    this.alive = true;
+  }
+  
+  respawn() {
+    this.alive = true;
+    this.ammo = 5;
+    this.score = 0;
   }
 
   update(width, height) {

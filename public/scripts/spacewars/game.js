@@ -3,6 +3,8 @@ let inputs;
 let rockets;
 let powerups;
 let ammo;
+let score;
+let alive;
 let id;
 let coordScale = { width: 1, height: 1 }
 let windowSize;
@@ -52,6 +54,8 @@ function updateView(data) {
   // find our rocket
   for (const rocket of rockets) {
     ammo = rocket.id == id ? rocket.ammo : ammo;
+    score = rocket.id == id ? rocket.score : score;
+    alive = rocket.id == id ? rocket.alive : alive;
   }
 }
 
@@ -60,6 +64,8 @@ function setup() {
   bullets = [];
   powerups = [];
   ammo = 5;
+  score = 0;
+  alive = true;
 
   inputs = {
     LEFT_ARROW: false,
@@ -73,15 +79,28 @@ function setup() {
 function draw() {
   // repeats every frame
   background(50);
+  
+  if (!alive) {
+    postScore(score).then(() => {
+      if (confirm('You died...\nPlay again?')) {
+        alive = true;
+        socket.emit('respawn');
+      } else {
+        window.location.href = '/'
+      }  
+    });
+  }
 
   drawAmmo();
+  drawScore(score);
 
   for (const powerup of powerups) {
     drawPowerUp(powerup);
   }
 
   for (const rocket of rockets) {
-    drawRocket(rocket);
+    if (rocket.alive)
+      drawRocket(rocket);
   }
   for (const bullet of bullets) {
     drawBullet(bullet);

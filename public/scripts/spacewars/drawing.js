@@ -75,3 +75,8 @@ function drawAmmo() {
     ellipse(10 + 10 * i, 10, 8);
   }
 }
+
+function drawScore(score) {
+  fill('white');
+  text("score: "+score, 8, 30);
+}

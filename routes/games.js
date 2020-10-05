@@ -7,11 +7,6 @@ const { getScoreByUserId, updateScore, getHighScore, createScore, getGames } = r
 /**
  * contains all the routes for the game related pages
  */
-router.get('/', async (req, res) => {
-  const games = await getGames();
-  res.json(games);
-}) 
-
 router.get('/:game', async (req, res) => {
   const { game } = req.params;
   res.render(game, { ...getUserData(req), highScore: await getHighScore(game) });

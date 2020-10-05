@@ -65,15 +65,19 @@ function checkPowerupCollisions(player, powerups) {
  * @param {*} bullets array of bullets
  */
 function checkBulletCollisions(player, bullets) {
+  let winners = [];
   for (const bullet of bullets) {
     if (
       player.id !== bullet.ownerId
       && playerBullet(player.coords, bullet.coords)
     ) {
-      player.toDelete = true;
+      //player.toDelete = true;
+      player.alive = false;
       bullet.toDelete = true;
+      winners.push(bullet.ownerId);
     }
-  }
+  } 
+  return winners;
 }
 
 /**
@@ -86,7 +90,10 @@ function checkCollisions(players, bullets, powerups) {
   let player;
   Object.keys(players).forEach((key, index) => {
     player = players[key];
-    checkBulletCollisions(player, bullets);
+    winnerIds = checkBulletCollisions(player, bullets);
+    for (let id of winnerIds) {
+      players[id].score += 10;
+    }
     checkPowerupCollisions(player, powerups);
   });
 }

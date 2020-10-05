@@ -122,6 +122,12 @@ class Game {
     // handle accelerating
     player.thrust(input.UP_ARROW);
   }
+  
+  handleRespawn(playerId) {
+    const player = this.players[playerId];
+    if (!player) return;
+    player.respawn();
+  }
 
   /**
    * getters for the server to send the objects to the client
@@ -136,6 +142,8 @@ class Game {
         thrusting: this.players[id].thrusting,
         ammo: this.players[id].ammo,
         username: this.players[id].username,
+        score: this.players[id].score,
+        alive: this.players[id].alive,
         id,
       });
     });

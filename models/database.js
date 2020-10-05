@@ -39,11 +39,6 @@ module.exports.createGame = async (title) => {
   await newGame.save();
 };
 
-module.exports.getGames = async () => {
-  const games = await Game.find();
-  return games;
-}
-
 module.exports.getGameId = async (title) => {
   const response = await Game.findOne({ title });
   if (!response) return null;

@@ -8,10 +8,12 @@ const { getUserById } = require('../../models/database');
 // TODO link up session and socketio connection
 let io;
 let game;
+let guests;
 
 module.exports.start = function start(server, session) {
   // create a game engine object
   game = new Game();
+  guests = 0;
 
   // create a server socket
   io = socket(server);
@@ -33,11 +35,13 @@ module.exports.start = function start(server, session) {
 async function newConnection(socket) {
   // TODO allow users only one connection
   // get the username for the user connecting with this socket
-  let username = 'guest';
+  let username = 'guest-'+guests;
   try {
     if (socket.handshake.session.passport) {
       const user = await getUserById(socket.handshake.session.passport.user);
       username = user.username;
+    } else {
+      guests += 1;
     }
   } catch (err) {
     console.log('[gameserver]', err);
@@ -53,11 +57,16 @@ async function newConnection(socket) {
 
   // callbacks to handle messages from the client
   socket.on('input', handleInput);
+  socket.on('respawn', handleRespawn);
   socket.on('disconnect', disconnected);
 
   // sends the input from the client to the gameEngine
   function handleInput(input) {
     game.handleInput(socket.id, input);
+  }
+  
+  function handleRespawn() {
+    game.handleRespawn(socket.id);
   }
 
   // removes a client from the game if he disconnects
