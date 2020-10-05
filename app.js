@@ -60,6 +60,7 @@ app.use('/', require('./routes/index'));
 app.use('/games', require('./routes/games'));
 app.use('/scores', require('./routes/scores'));
 app.use('/users', require('./routes/users'));
+app.use('/messages', require('./routes/messages'));
 
 // start listening
 const { PORT } = process.env;

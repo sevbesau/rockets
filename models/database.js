@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const User = require('./user');
 const Score = require('./score');
 const Game = require('./game');
+const Message = require('./message');
 
 module.exports.connect = () => {
   mongoose.connect(process.env.MONGOURI, {
@@ -16,6 +17,20 @@ module.exports.connect = () => {
   .catch((err) => console.log('[mongodb] connection failed', err));
   //this.createScore(10, '5f750ea9aae24d37ef1efbc9', 'snake');
 }
+
+/**
+ * Message
+ */
+module.exports.addMessage = async (message) => {
+  const newMessage = Message(message);
+  await newMessage.save();
+};
+
+module.exports.getMessages = async () => {
+  const messages = await Message.find();
+  if (!messages) return null;
+  return messages;
+};
 
 /**
  * Game 
