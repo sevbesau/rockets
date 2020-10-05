@@ -63,7 +63,15 @@ module.exports.getScoresByGameName = async (game) => {
   const gameId = await this.getGameId(game);
   const scores = await Score.find({ gameId });
   if (!scores) return null;
-  return scores;
+  let scoresWithUsername = [];
+  for (let score of scores) {
+    scoresWithUsername.push({
+      points: score.points,
+      user: (await User.findById(score.userId)).username
+    });
+  }
+  console.log(scoresWithUsername);
+  return scoresWithUsername;
 };
 
 module.exports.getScoreByUserId = async (game, userId) => {

@@ -4,5 +4,19 @@ block title
   title Leaderboard
 
 block content
-  h1= game
-  pre= scores
+  .row
+    .col-md-6.m-auto.text-center
+      h1.mt-5.mb-4= game
+      if scores
+        table.table
+          thead 
+            tr 
+              th place
+              th points
+              th user
+          tbody
+            each score, index in scores
+              tr
+                th= index+1
+                td= score.points
+                td= score.user
