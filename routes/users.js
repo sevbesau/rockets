@@ -1,7 +1,8 @@
 const express = require('express');
 const passport = require('passport');
+const { getUserData, isAuthenticated } = require('../bin/util');
 // const { sanitize } = require('../bin/util');
-const { createUser, getUserByUsername } = require('../models/database');
+const { createUser, getUserByUsername, deleteUserById } = require('../models/database');
 
 const router = express.Router();
 
@@ -10,9 +11,41 @@ router.get('/login', (req, res) => {
   res.render('login', {});
 });
 
+// route for the login form
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/users/login',
+  failureFlash: true,
+}));
+
 // route to get the register page
 router.get('/register', (req, res) => {
   res.render('register', {});
+});
+
+// route for the register form
+router.post('/register', async (req, res) => {
+  const {
+    errors, username, password, password2,
+  } = await validateRegisterForm(req);
+  if (errors.length > 0) {
+    // invalid form
+    res.render('register', {
+      errors, username, password, password2,
+    });
+  } else {
+    // valid form
+    try {
+      await createUser(username, password); // add the user to the database
+      req.flash('success_msg', 'You are now registered and can log in');
+      res.redirect('/users/login');
+    } catch (e) {
+      errors.push({ msg: 'Oops, something went wrong, please try again.' });
+      res.render('register', {
+        errors, username, password, password2,
+      });
+    }
+  }
 });
 
 router.get('/logout', (req, res) => {
@@ -21,13 +54,26 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 })
 
-// route for the login form
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/users/login',
-  failureFlash: true,
-}));
+// route to render the account managing page
+router.get('/:userId', isAuthenticated, (req, res) => {
+  res.render('account', getUserData(req));
+}); 
 
+router.post('/:userId', isAuthenticated, async (req, res) => {
+  // TODO validate form!
+  await updateUserById(req.params.userId, req.body);
+  res.render('account', getUserData(req));
+})
+
+router.get('/:userId/delete', isAuthenticated, (req, res) => {
+  res.render('confirmDeleteAccount', getUserData(req));
+})
+
+router.post('/:userId/delete', isAuthenticated, async (req, res) => {
+  await deleteUserById(req.params.userId);
+  res.redirect('/');
+});
+  
 /**
  * Check if all the fields contain the expected data types and formats
  * Also checks for duplicates in the database
@@ -61,30 +107,4 @@ async function validateRegisterForm(req) {
     errors, username, password, password2,
   };
 }
-
-// route for the register form
-router.post('/register', async (req, res) => {
-  const {
-    errors, username, password, password2,
-  } = await validateRegisterForm(req);
-  if (errors.length > 0) {
-    // invalid form
-    res.render('register', {
-      errors, username, password, password2,
-    });
-  } else {
-    // valid form
-    try {
-      await createUser(username, password); // add the user to the database
-      req.flash('success_msg', 'You are now registered and can log in');
-      res.redirect('/users/login');
-    } catch (e) {
-      errors.push({ msg: 'Oops, something went wrong, please try again.' });
-      res.render('register', {
-        errors, username, password, password2,
-      });
-    }
-  }
-});
-
 module.exports = router;

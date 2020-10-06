@@ -119,3 +119,11 @@ module.exports.getUserByUsername = async (username) => {
   if (!response) return null;
   return response;
 };
+
+module.exports.updateUserById = async (id, data) => {
+  // TODO
+}
+
+module.exports.deleteUserById = async (id) => {
+  await User.findByIdAndDelete(id);
+}

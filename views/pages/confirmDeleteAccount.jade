@@ -1,0 +1,16 @@
+extends ../templates/layout
+
+block title
+  title Delete Account?
+
+block content
+  .row.mt-5
+    .col-md-6.m-auto
+      .card.card-body 
+        h1.text-center.mb-3
+          i.fas.fa-user-slash
+          |  Delete Your account?
+        include ../includes/messages
+        form(action="/users/#{user._id}/delete", method="POST")
+          button(type="submit").btn.btn-primary.btn-block Yes, delete my account!
+        a(href="/users/#{user._id}").btn.btn-danger No, keep my account!

@@ -14,13 +14,16 @@ block content
         form(action="/users/register", method="POST")
           .form-group
             label(for="username") Username
-            input(type="text", name="username", value=username).form-control#username
+            input(type="text", name="username", value=username required).form-control#username
+          .form-group
+            label(for="imageUrl") Profile image
+            input(type="url", name="imageUrl", value=imageUrl).form-control#imageUrl
           .form-group
             label(for="password") Password
-            input(type="password", name="password", value=password).form-control#password
+            input(type="password", name="password", value=password required).form-control#password
           .form-group
             label(for="password") Repeat password
-            input(type="password", name="password2", value=password2).form-control#password2
+            input(type="password", name="password2", value=password2 required).form-control#password2
           button(type="submit").btn.btn-primary.btn-block Register 
         p.lead.mt-4 Have an account?
           a(href="/users/login") Login

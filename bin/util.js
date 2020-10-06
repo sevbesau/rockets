@@ -12,10 +12,14 @@ module.exports.randomInt = function (max) {
 module.exports.getUserData = function (req) {
   return {
     loggedIn: req.isAuthenticated(),
-    username: req.isAuthenticated() ? req.user.username : undefined,
+    user: req.isAuthenticated() ? req.user : undefined,
   };
 };
 
+module.exports.isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated()) next();
+  else res.sendStatus(403);
+}
 /**
  * Sanitizes the string so our database is protected
  */

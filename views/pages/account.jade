@@ -1,0 +1,25 @@
+extends ../templates/layout
+
+block title
+  title Account
+
+block content
+  .row.mt-5
+    .col-md-6.m-auto
+      .card.card-body 
+        h1.text-center.mb-3
+          i.fas.fa-user-cog
+          |  User settings
+        include ../includes/messages
+        form(action="/users/#{user._id}", method="POST")
+          .form-group
+            label(for="imageUrl") Profile image
+            input(type="text", name="imageUrl", value=user.imageUrl).form-control#imageUrl
+          .form-group
+            label(for="password") Change Password
+            input(type="password", name="password", value=password).form-control#password
+          .form-group
+            label(for="password") Repeat password
+            input(type="password", name="password2", value=password2).form-control#password2
+          button(type="submit").btn.btn-primary.btn-block Update settings
+        a(href="/users/#{user._id}/delete").btn.btn-danger Remove your account
