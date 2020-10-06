@@ -99,10 +99,9 @@ module.exports.getHighScore = async (game) => {
 /**
  * User 
  */
-module.exports.createUser = async (email, username, password) => {
+module.exports.createUser = async (username, password) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = User({
-    email,
     username,
     password: hashedPassword,
   });
@@ -115,13 +114,7 @@ module.exports.getUserById = async (id) => {
   return response;
 };
 
-module.exports.getUserByEmail = async (email) => {
-  const response = await User.findOne({ email: email });
-  if (!response) return null;
-  return response;
-};
-
-module.exports.getUserByName = async (username) => {
+module.exports.getUserByUsername = async (username) => {
   const response = await User.findOne({ username: username });
   if (!response) return null;
   return response;

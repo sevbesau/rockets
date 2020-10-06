@@ -18,7 +18,7 @@ const database = require('./models/database');
 process.env.NODE_ENV !== 'production' && dotenv.config();
 
 database.connect();
-initializePassport(passport, database.getUserByEmail, database.getUserById);
+initializePassport(passport, database.getUserByUsername, database.getUserById);
 
 const session = Session({
   secret: process.env.SESSION_SECRET,

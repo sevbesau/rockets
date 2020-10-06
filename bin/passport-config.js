@@ -1,12 +1,12 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
-function initialize(passport, getUserByEmail, getUserById) {
-  const authenticateUser = async (email, password, done) => {
+function initialize(passport, getUserByUsername, getUserById) {
+  const authenticateUser = async (username, password, done) => {
     // look up the user
-    const user = await getUserByEmail(email);
+    const user = await getUserByUsername(username);
     if (user == null) {
-      return done(null, false, { message: 'No user with that email' });
+      return done(null, false, { message: 'No user with that username' });
     }
     try {
       // check if the password is correct
@@ -22,7 +22,7 @@ function initialize(passport, getUserByEmail, getUserById) {
   // use a local login system, dont use fb, google, etc..
   passport.use(new LocalStrategy(
     {
-      usernameField: 'email',
+      usernameField: 'username',
       passwordField: 'password',
     },
     authenticateUser,
