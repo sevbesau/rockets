@@ -53,9 +53,11 @@ function updateView(data) {
   powerups = data.powerups;
   // find our rocket
   for (const rocket of rockets) {
-    ammo = rocket.id == id ? rocket.ammo : ammo;
-    score = rocket.id == id ? rocket.score : score;
-    alive = rocket.id == id ? rocket.alive : alive;
+    if (rocket.id == id) {
+      ammo = rocket.ammo;
+      score = rocket.score;
+      alive = rocket.alive;
+    }
   }
 }
 
