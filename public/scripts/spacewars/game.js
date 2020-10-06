@@ -4,7 +4,6 @@ let rockets;
 let powerups;
 let ammo;
 let score;
-let alive;
 let id;
 let coordScale = { width: 1, height: 1 }
 let windowSize;
@@ -19,6 +18,7 @@ function preload() {
   // handle messages from the socket
   socket.on('connected', onConnection);
   socket.on('view', updateView);
+  socket.on('death', onDeath);
 }
 
 function onConnection(data) {
@@ -31,6 +31,15 @@ function onConnection(data) {
   coordScale.width = canvasWidth / windowSize.width;
   coordScale.height = canvasHeight / windowSize.height;
   createCanvas(canvasWidth, canvasHeight).parent('canvasContainer');
+}
+
+function onDeath() {
+  if (confirm('You died...\nPlay again?')) {
+    socket.emit('respawn');
+  } else {
+    window.location.href = '/'
+  }  
+  postScore(score);
 }
 
 function windowResized() {
@@ -56,7 +65,6 @@ function updateView(data) {
     if (rocket.id == id) {
       ammo = rocket.ammo;
       score = rocket.score;
-      alive = rocket.alive;
     }
   }
 }
@@ -67,7 +75,6 @@ function setup() {
   powerups = [];
   ammo = 5;
   score = 0;
-  alive = true;
 
   inputs = {
     LEFT_ARROW: false,
@@ -81,16 +88,6 @@ function setup() {
 function draw() {
   // repeats every frame
   background(50);
-  
-  if (!alive) {
-    if (confirm('You died...\nPlay again?')) {
-      alive = true;
-      socket.emit('respawn');
-    } else {
-      window.location.href = '/'
-    }  
-    postScore(score);
-  }
 
   drawAmmo();
   drawScore(score);

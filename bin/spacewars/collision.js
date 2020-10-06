@@ -73,6 +73,7 @@ function checkBulletCollisions(player, bullets) {
     ) {
       //player.toDelete = true;
       player.alive = false;
+      player.notifyDead();
       bullet.toDelete = true;
       winners.push(bullet.ownerId);
     }

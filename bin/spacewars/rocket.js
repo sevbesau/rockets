@@ -1,7 +1,8 @@
 const config = require('./config');
 
 class Rocket {
-  constructor(x, y, id, username) {
+  constructor(x, y, id, username, socket) {
+    this.socket = socket; // the socket the user is on
     this.username = username; // the username of the player controlling the rocket
     this.score = 0; // the score
     this.coords = { x, y }; // the coords of the player
@@ -14,6 +15,10 @@ class Rocket {
     this.speedBoost = 0; // the boost in velocity given by a powerup
     this.dir = 0;
     this.alive = true;
+  }
+  
+  notifyDead() {
+    this.socket.emit('death')
   }
   
   respawn() {

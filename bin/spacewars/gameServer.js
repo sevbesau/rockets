@@ -49,7 +49,7 @@ async function newConnection(socket) {
   console.log(`[gameServer] new connection from ${username}, socketid: ${socket.id}`);
 
   // add a player to the game, and let the client know he's connected
-  game.addPlayer(socket.id, username);
+  game.addPlayer(socket, username);
   socket.emit('connected', {
     id: socket.id,
     window: { width: config.WIDTH, height: config.HEIGHT },

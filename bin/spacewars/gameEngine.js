@@ -17,9 +17,10 @@ class Game {
    * Adding and removing objects to the game
    */
 
-  addPlayer(playerId, username) {
+  addPlayer(socket, username) {
+    const playerId = socket.id;
     this.ids.push(playerId);
-    this.players[playerId] = new Rocket(200, 150, playerId, username);
+    this.players[playerId] = new Rocket(200, 150, playerId, username, socket);
   }
 
   addBullet(playerId) {
